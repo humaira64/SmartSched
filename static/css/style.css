@@ -1,0 +1,1042 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* ---------- CSS Variables ---------- */
+
+:root{
+
+    --primary-color:#0B3C6D;
+    --secondary-color:#2D6EA3;
+
+    --background-color:#F4F7FB;
+    --card-color:#FFFFFF;
+
+    --text-color:#2C3E50;
+    --border-color:#E3EAF2;
+
+    --success-color:#28A745;
+    --warning-color:#FFC107;
+    --danger-color:#DC3545;
+
+    --border-radius:12px;
+
+    --shadow:
+        0 2px 10px rgba(0,0,0,0.08);
+
+}
+
+/* ---------- Reset ---------- */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* ---------- Body ---------- */
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:var(--background-color);
+
+    color:var(--text-color);
+
+    line-height:1.6;
+
+    margin: 0;
+
+    overflow-y: auto;
+
+}
+
+/* ---------- Headings ---------- */
+
+h1,h2,h3,h4,h5,h6{
+
+    font-weight:600;
+    color:var(--primary-color);
+
+}
+
+/* ---------- Links ---------- */
+
+a{
+
+    text-decoration:none;
+    color:inherit;
+
+}
+
+/* ---------- Images ---------- */
+
+img{
+
+    max-width:100%;
+    display:block;
+
+}
+
+/* ---------- Buttons ---------- */
+
+.btn{
+
+    border-radius:10px;
+
+    font-weight:500;
+
+    padding:10px 20px;
+
+}
+
+/* ---------- Form ---------- */
+
+.form-control{
+
+    height:48px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border-color);
+
+}
+
+.form-control:focus{
+
+    box-shadow:none;
+
+    border-color:var(--primary-color);
+
+}
+
+/* ---------- Card ---------- */
+
+.card{
+
+    border:none;
+
+    border-radius:var(--border-radius);
+
+    box-shadow:var(--shadow);
+
+}
+
+/* ==============================
+   Navbar
+================================ */
+
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    z-index: 1000;
+}
+
+/* ==============================
+   Sidebar
+================================ */
+
+.sidebar{
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+    background: #0B3C6D;
+}
+
+.sidebar .nav-link{
+    color: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar .nav-link:hover{
+    background: rgba(255,255,255,.15);
+}
+
+.sidebar hr{
+    border-color: rgba(255,255,255,.2);
+}
+
+.sidebar .text-danger{
+    color: #ffb4b4 !important;
+}
+
+
+/* ==============================
+   Content
+================================ */
+
+.main-content{
+    margin-left:250px;
+    margin-top:70px;
+    padding:30px;
+    width:calc(100% - 250px);
+}
+
+/* ==========================
+   LOGIN PAGE
+========================== */
+
+.login-page{
+    background:#f4f7fb;
+}
+
+.login-left{
+    background:linear-gradient(135deg,#0B3C6D,#2D6EA3);
+    justify-content:center;
+    align-items:center;
+}
+
+.login-card{
+    width:500px;
+    background:white;
+    padding:20px 40px 10px 40px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.input-group-text{
+    background:white;
+}
+
+.btn-primary{
+    background:#0B3C6D;
+    border:none;
+}
+
+.btn-primary:hover{
+    background:#082b4d;
+}
+
+/* ==========================
+   STUDENT DASHBOARD
+========================== */
+
+.welcome-banner{
+
+    background:linear-gradient(135deg,#0B3C6D,#2D6EA3);
+    color:white;
+
+    padding:35px;
+
+    border-radius:15px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    width: 100%;
+
+}
+
+.welcome-banner h2{
+
+    color:white;
+
+}
+
+.badge{
+
+    padding:10px 18px;
+
+}
+
+/* ==========================
+   DASHBOARD
+========================== */
+
+.dashboard-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.dashboard-card i{
+
+    font-size:35px;
+
+    margin-bottom:15px;
+
+}
+
+.dashboard-card h3{
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.dashboard-card p{
+
+    color:#6c757d;
+
+    margin:0;
+
+}
+
+/* ==========================
+   FIND SUBJECTS
+========================== */
+
+.page-header h2{
+
+    font-weight:700;
+
+}
+
+.page-header p{
+
+    color:#6c757d;
+
+}
+
+.search-card{
+
+    border:none;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+}
+
+.subject-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    margin-bottom:20px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.subject-card:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+}
+
+.subject-action{
+
+    width:180px;
+
+}
+
+.subject-action label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+.selected-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    position:sticky;
+
+    top:100px;
+
+}
+
+.selected-card h4{
+
+    font-weight:700;
+
+}
+
+/* =========================================
+   TIMETABLE GRID
+   ========================================= */
+
+.timetable-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 650px;
+}
+
+/* Main timetable */
+.timetable-grid {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+/* Each period column */
+.timetable-grid th,
+.timetable-grid td {
+    border: 1px solid #d9e3ee;
+    text-align: center;
+}
+
+/* DAY HEADER */
+.timetable-grid .day-header th {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    height: 34px;
+
+    background-color: #0b3c6d;
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* PERIOD HEADER */
+.timetable-grid .period-header th {
+    position: sticky;
+    top: 38px;
+    z-index: 19;
+
+    width: 42px;
+    min-width: 42px;
+    max-width: 42px;
+
+    height: 28px;
+
+    background-color: #f4f7fb;
+    color: #2c3e50;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Empty timetable cells */
+.timetable-grid .timetable-slot {
+    width: 42px;
+    min-width: 42px;
+    max-width: 42px;
+
+    height: 65px;
+
+    padding: 2px;
+
+    vertical-align: middle;
+
+    background-color: #ffffff;
+
+    cursor: pointer;
+}
+
+/* Hover */
+.timetable-grid .timetable-slot:hover {
+    background-color: #f4f7fb;
+}
+
+/* Scheduled class */
+.timetable-grid .scheduled-subject {
+    width: 100%;
+    box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 6px 4px;
+
+    background-color: #f4f7fb;
+    border: 1px solid #d9e3ee;
+    border-radius: 6px;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.timetable-grid .scheduled-subject strong {
+    display: block;
+
+    color: #0b3c6d;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.timetable-grid .scheduled-subject:hover {
+    background-color: #eaf2f9;
+    border-color: #b8cde0;
+}
+
+/* ==========================
+   PROFILE
+========================== */
+
+.profile-card{
+
+    border:none;
+    border-radius:15px;
+
+}
+
+.profile-avatar{
+
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:#0B3C6D;
+
+    color:white;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:auto;
+
+    font-size:55px;
+
+}
+
+.profile-label{
+
+    font-weight:600;
+    margin-bottom:8px;
+
+}
+
+
+/* ==========================
+   ADMIN
+========================== */
+
+.admin-sidebar{
+
+    position:fixed;
+
+    top:70px;
+
+    left:0;
+
+    width:250px;
+
+    height:calc(100vh - 70px);
+
+    background:#0B3C6D;
+
+    overflow-y:auto;
+
+}
+
+.admin-sidebar .nav-link{
+
+    color:white;
+
+    padding:14px 20px;
+
+    margin:6px 10px;
+
+    border-radius:10px;
+
+    transition:.3s;
+
+}
+
+.admin-sidebar .nav-link:hover{
+
+    background:rgba(255,255,255,.15);
+
+}
+
+.admin-sidebar hr{
+
+    border-color:rgba(255,255,255,.2);
+
+}
+
+.admin-sidebar + .col-md-10{
+
+    margin-left:250px;
+
+}
+
+/* ==========================
+   ADMIN DASHBOARD
+========================== */
+
+.admin-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+.admin-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.admin-card i{
+
+    font-size:40px;
+
+    color:#0B3C6D;
+
+    margin-bottom:15px;
+
+}
+
+.admin-card h3{
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.admin-card p{
+
+    color:#6c757d;
+
+    margin:0;
+
+}
+
+/* ==============================
+   ADMIN - MANAGE SUBJECTS
+================================ */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.page-header h2{
+
+    font-weight:700;
+
+    margin-bottom:5px;
+
+}
+
+.page-header p{
+
+    margin-bottom:0;
+
+}
+
+
+/* ==============================
+   Subject Table
+================================ */
+
+.table th{
+
+    background:#0B3C6D;
+
+    color:white;
+
+    font-weight:600;
+
+    padding:12px 16px;
+
+}
+
+.table td{
+
+    padding:10px 16px;
+
+    vertical-align:middle;
+
+}
+
+.table tbody tr{
+
+    height:50px;
+
+}
+
+.section-column {
+    width: 220px;
+    max-width: 220px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.sections-scroll-area {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.section-column {
+    width: 180px;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    gap: 6px 10px;
+}
+
+/* ==============================
+   Manage Timetable
+================================ */
+
+.timetable-wrapper {
+    overflow-x: auto;
+}
+
+.timetable-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.timetable-table th,
+.timetable-table td {
+    border: 1px solid #dee2e6;
+}
+
+.timetable-table th {
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px;
+}
+
+.timetable-table td {
+    vertical-align: middle;
+}
+
+.timetable-table .time-column {
+    width: 90px;
+    min-width: 90px;
+    text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.timetable-slot {
+    height: 70px;
+    min-width: 150px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.timetable-slot:hover {
+    background-color: #f5f9fd;
+}
+
+.empty-slot {
+    color: #adb5bd;
+    font-size: 20px;
+}
+
+.scheduled-subject {
+    background-color: #e8f1ff;
+    border-left: 4px solid #0d6efd;
+    border-radius: 5px;
+    padding: 8px;
+    text-align: left;
+    height: 100%;
+}
+
+.subject-selection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subject-option {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.subject-option:hover {
+    background-color: #f5f9fd;
+}
+
+/* ==============================
+   Timetable Schedule Cards
+   ============================== */
+
+.timetable-slot {
+    vertical-align: top !important;
+    padding: 4px !important;
+    height: 70px;
+}
+
+
+/* Each class inside a timetable slot */
+
+.scheduled-subject {
+    display: block;
+    width: calc(100% - 4px);
+
+    background-color: #f4f7fb;
+    border: 1px solid #d9e3ee;
+    border-radius: 6px;
+
+    padding: 6px 5px;
+    margin: 2px;
+
+    cursor: pointer;
+    text-align: center;
+
+    box-sizing: border-box;
+
+    /* IMPORTANT */
+    height: auto;
+    min-height: 0;
+}
+
+
+/* Subject code + section */
+
+.scheduled-subject strong {
+    display: block;
+
+    color: #0b3c6d;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Hover */
+
+.scheduled-subject:hover {
+    background-color: #eaf2f9;
+    border-color: #b8cde0;
+}
+
+
+/* When multiple classes exist in one slot */
+
+.timetable-slot.has-schedule {
+    vertical-align: top !important;
+    padding: 4px !important;
+}
+
+/* Class Details */
+
+.class-detail-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+
+.class-detail-item:last-child {
+    border-bottom: none;
+}
+
+
+.class-detail-item small {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.add-schedule-btn {
+    display: block;
+
+    width: 100%;
+
+    border: none;
+    background: transparent;
+
+    color: #adb5bd;
+
+    font-size: 18px;
+    font-weight: 500;
+
+    padding: 3px 0;
+    margin-top: 2px;
+
+    cursor: pointer;
+}
+
+.add-schedule-btn:hover {
+    color: #0b3c6d;
+    background-color: #f5f9fd;
+    border-radius: 5px;
+}
+
+/* =========================================
+   ROLE SELECTION
+   ========================================= */
+
+.role-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    width: 100%;
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e3eaf2;
+    border-radius: 14px;
+
+    transition: all 0.25s ease;
+
+    cursor: pointer;
+}
+
+
+/* Hover effect */
+
+.role-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #0B3C6D;
+
+    box-shadow: 0 8px 20px rgba(11, 60, 109, 0.12);
+}
+
+
+/* Icon */
+
+.role-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    font-size: 24px;
+
+    flex-shrink: 0;
+}
+
+
+/* Student icon */
+
+.student-icon {
+    background: #eaf3fb;
+    color: #0B3C6D;
+}
+
+
+/* Admin icon */
+
+.admin-icon {
+    background: #eef1f5;
+    color: #0B3C6D;
+}
+
+
+/* Text */
+
+.role-content {
+    flex-grow: 1;
+}
+
+.role-content h5 {
+    color: #0B3C6D;
+}
+
+
+/* Arrow */
+
+.role-arrow {
+    font-size: 20px;
+    color: #8a99a8;
+
+    transition: transform 0.25s ease,
+                color 0.25s ease;
+}
+
+
+/* Arrow hover */
+
+.role-card:hover .role-arrow {
+    transform: translateX(5px);
+    color: #0B3C6D;
+}

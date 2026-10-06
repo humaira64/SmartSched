@@ -1,0 +1,138 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Academic Sessions
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>Academic Sessions</h2>
+
+        <p class="text-muted">
+            Manage academic sessions available in SmartSched.
+        </p>
+
+    </div>
+
+    <a
+        href="{{ url_for('add_session') }}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-plus-lg me-2"></i>
+        Add New Session
+    </a>
+
+</div>
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+            Academic Session List
+        </h5>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Session</th>
+                        <th>Type</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for session in sessions %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ session.session_code }}
+                            </strong>
+
+                        </td>
+                        <td>
+                            {{ session.session_type }}
+                        </td>
+                        <td>
+
+                            {% if session.is_active %}
+                            
+                            <a
+                            href="{{ url_for('toggle_session', session_id=session.id) }}"
+                            class="btn btn-sm btn-success"
+                            onclick="return confirm('Set this session as inactive?');"
+                            >
+                            
+                            Active
+                            
+                            </a>
+                        {% else %}
+
+                            <a
+                            href="{{ url_for('toggle_session', session_id=session.id) }}"
+                            class="btn btn-sm btn-secondary"
+                            onclick="return confirm('Set this session as active?');"
+                            >
+                            
+                            Inactive
+                            </a>
+
+                        {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                    {% if not sessions %}
+
+                    <tr>
+
+                        <td
+                            colspan="3"
+                            class="text-center text-muted py-5"
+                        >
+
+                            No academic sessions available.
+
+                        </td>
+
+                    </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

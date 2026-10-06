@@ -1,0 +1,463 @@
+/* =========================================
+   ADMIN - MANAGE TIMETABLE
+========================================= */
+
+.timetable-wrapper {
+    width: 100%;
+    overflow: visible;
+}
+
+.day-timetable {
+    margin-bottom: 4px;
+}
+
+.day-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #111;
+    margin-bottom: 4px;
+}
+
+.timetable-grid {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.timetable-grid th,
+.timetable-grid td {
+    border: 1px solid #d9e3ee;
+    text-align: center;
+}
+
+
+/* =========================================
+   PERIOD HEADER + TIME TOOLTIP
+   ========================================= */
+
+.timetable-grid .period-header-cell {
+    position: relative;
+    cursor: pointer;
+    height: 28px;
+    background-color: #f4f7fb;
+    color: #2c3e50;
+    font-size: 11px;
+    font-weight: 600;
+    transition: background-color 0.15s ease;
+}
+
+.timetable-grid .period-header-cell:hover {
+    background-color: #e3edf7;
+}
+
+/* Time tooltip */
+.timetable-grid .period-header-cell::after {
+    content: attr(data-time);
+
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 6px);
+
+    transform: translateX(-50%);
+
+    background-color: #0b3c6d;
+    color: white;
+
+    padding: 6px 9px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 1000;
+
+    transition: opacity 0.15s ease;
+}
+
+/* Small arrow */
+.timetable-grid .period-header-cell::before {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: calc(100% + 1px);
+
+    transform: translateX(-50%);
+
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #0b3c6d;
+
+    opacity: 0;
+    visibility: hidden;
+
+    z-index: 1001;
+}
+
+.timetable-grid .period-header-cell:hover::after,
+.timetable-grid .period-header-cell:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================
+   TIMETABLE SLOT
+   ========================================= */
+
+.timetable-grid .timetable-slot {
+    position: relative;
+    height: 55px;
+    min-height: 55px;
+    padding: 2px;
+    vertical-align: top;
+    background-color: #ffffff;
+    cursor: pointer;
+    overflow: visible;
+}
+
+.timetable-grid .timetable-slot:hover {
+    background-color: #f4f7fb;
+}
+
+/* =========================================
+   SCHEDULED SUBJECT CARD
+   ========================================= */
+
+.timetable-slot {
+    position: relative;
+    height: 55px;
+    min-height: 55px;
+    padding: 2px;
+    vertical-align: top;
+    background-color: #ffffff;
+    overflow: visible;
+}
+
+/* SUBJECT CARD */
+.scheduled-class {
+    position: absolute;
+    left: 2px;
+    height: 28px;
+    padding: 0 4px;
+    box-sizing: border-box;
+    border: 1px solid #b8cde0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* ONLY SHOW SECTION NUMBER */
+.scheduled-class strong {
+    margin: 0;
+    padding: 0;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 1 PERIOD */
+.scheduled-class.duration-1 {
+    width: calc(100% - 4px);
+}
+
+/* 2 PERIODS */
+.scheduled-class.duration-2 {
+    width: calc(200% - 4px);
+}
+
+/* 3 PERIODS */
+.scheduled-class.duration-3 {
+    width: calc(300% - 4px);
+}
+
+/* 4 PERIODS */
+.scheduled-class.duration-4 {
+    width: calc(400% - 4px);
+}
+
+/* =========================================
+   SCHEDULED CLASS
+   ========================================= */
+
+.timetable-slot {
+    position: relative;
+    height: 80px;
+    vertical-align: top;
+    overflow: visible !important;
+    cursor: pointer;
+}
+
+/* Small timetable block */
+.scheduled-class {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+
+    width: calc(100% - 4px);
+    height: 28px;
+
+    padding: 2px 4px;
+    box-sizing: border-box;
+
+    border-radius: 5px;
+    border: 1px solid #b8cde0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    overflow: hidden;
+
+    cursor: pointer;
+    z-index: 10;
+}
+
+.scheduled-class strong {
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1;
+    white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scheduled-class.duration-1 {
+    width: calc(100% - 4px);
+}
+
+.scheduled-class.duration-2 {
+    width: calc(200% - 4px);
+}
+
+.scheduled-class.duration-3 {
+    width: calc(300% - 4px);
+}
+
+.scheduled-class.duration-4 {
+    width: calc(400% - 4px);
+}
+
+/* ONLY SHOW SECTION */
+.scheduled-class .section-number {
+    color: #0b3c6d;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+/*
+   1 hour = 1 period
+   2 hours = 2 periods
+   3 hours = 3 periods
+*/
+.scheduled-class.duration-1 {
+    width: calc(100% - 6px);
+}
+
+.scheduled-class.duration-2 {
+    width: calc(200% - 6px);
+}
+
+.scheduled-class.duration-3 {
+    width: calc(300% - 6px);
+}
+
+.scheduled-class.duration-4 {
+    width: calc(400% - 6px);
+}
+
+.scheduled-class:hover {
+    border-color: #0b3c6d;
+    z-index: 50;
+}
+
+/* =========================================
+   OCCUPIED SLOT
+========================================= */
+
+.timetable-slot.occupied {
+    padding: 3px;
+}
+
+
+/* =========================================
+   PART OF MULTI-PERIOD CLASS
+========================================= */
+
+.timetable-slot.part-of-class {
+    background-color: #f8fafc;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.class-detail-item {
+    padding: 10px 0;
+
+    border-bottom: 1px solid #e9ecef;
+}
+
+
+.class-detail-item:last-child {
+    border-bottom: none;
+}
+
+
+.class-detail-item small {
+    display: block;
+
+    color: #6c757d;
+
+    margin-bottom: 3px;
+}
+
+
+.class-detail-item div {
+    font-weight: 600;
+
+    color: #212529;
+}
+
+
+/* =========================================
+   SUBJECT SELECTION
+========================================= */
+
+.subject-selection-list {
+
+    max-height: 400px;
+
+    overflow-y: auto;
+}
+
+
+.subject-option {
+
+    width: 100%;
+
+    border: 1px solid #dee2e6;
+
+    background: #fff;
+
+    border-radius: 7px;
+
+    padding: 10px 12px;
+
+    margin-bottom: 8px;
+
+    text-align: left;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+.subject-option:hover {
+
+    background-color: #f4f8fc;
+
+    border-color: #0b3c6d;
+}
+
+
+.subject-option strong {
+
+    color: #0b3c6d;
+
+    font-size: 13px;
+}
+
+
+.subject-option span {
+
+    color: #333;
+
+    font-size: 12px;
+}
+
+
+.subject-option small {
+
+    color: #6c757d;
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   DASHBOARD CALENDAR
+========================================= */
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.calendar-day-name {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6c757d;
+    padding: 3px 0;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 5px 0;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.calendar-day.today {
+    background-color: #0B3C6D;
+    color: white;
+    font-weight: 600;
+}
+
+.calendar-day.empty {
+    visibility: hidden;
+}
+
+.session-code-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.session-code-link:hover {
+    opacity: 0.8;
+}

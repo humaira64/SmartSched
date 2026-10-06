@@ -1,0 +1,288 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Add Timetable Resource
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Add Timetable Resource</h2>
+
+        <p class="text-muted">
+            Prepare a class before assigning it to the timetable.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            <!-- Subject / Section -->
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Subject / Section
+                </label>
+
+                <select
+                    name="section_id"
+                    class="form-select"
+                    required
+                >
+
+                    <option value="">
+                        Select Subject / Section
+                    </option>
+
+                    {% for item in subject_sections %}
+
+                    <option value="{{ item.section_id }}" data-faculty-id="{{ item.faculty_id }}">
+
+                        {{ item.subject_code }}_{{ item.section_code }}
+                        —
+                        {{ item.subject_name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Lecturer -->
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Lecturer
+                </label>
+
+                <select name="lecturer_id" id="lecturerSelect" class="form-select" required>
+                    <option value="">Select Lecturer</option>
+
+                    {% for lecturer in lecturers %}
+                        <option
+                            value="{{ lecturer.id }}"
+                            data-faculty-id="{{ lecturer.faculty_id }}"
+                        >
+                            {{ lecturer.staff_id }} - {{ lecturer.lecturer_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+            </div>
+
+
+            <!-- Delivery Mode -->
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Delivery Mode
+                </label>
+
+                <select
+                    name="delivery_mode"
+                    id="deliveryMode"
+                    class="form-select"
+                    required
+                >
+
+                    <option value="">
+                        Select Delivery Mode
+                    </option>
+
+                    <option value="Physical">
+                        Physical
+                    </option>
+
+                    <option value="Online">
+                        Online
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Classroom -->
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Classroom
+                </label>
+
+                <select
+                    name="classroom_id"
+                    id="classroomSelect"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        Select Classroom
+                    </option>
+
+                    {% for classroom in classrooms %}
+
+                    <option value="{{ classroom.id }}">
+
+                        {{ classroom.classroom_code }}
+                        —
+                        {{ classroom.classroom_name }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <small class="text-muted">
+                    Required for physical classes only.
+                </small>
+
+            </div>
+
+
+            <!-- Duration -->
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Duration
+                </label>
+
+                <select
+                    name="duration_periods"
+                    class="form-select"
+                    required
+                >
+
+                    <option value="">
+                        Select Duration
+                    </option>
+
+                    {% for period in range(1, 5) %}
+
+                    <option value="{{ period }}">
+                        {{ period }} period{% if period > 1 %}s{% endif %}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2">
+
+                <a
+                    href="{{ url_for('timetable_resources') }}"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-check-lg me-2"></i>
+                    Save Resource
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+const deliveryMode =
+    document.getElementById("deliveryMode");
+
+const classroomSelect =
+    document.getElementById("classroomSelect");
+
+const sectionSelect =
+    document.querySelector('select[name="section_id"]');
+
+const lecturerSelect =
+    document.getElementById("lecturerSelect");
+
+
+// ==============================
+// Delivery Mode → Classroom
+// ==============================
+
+function updateClassroom() {
+
+    if (deliveryMode.value === "Online") {
+
+        classroomSelect.value = "";
+        classroomSelect.disabled = true;
+
+    } else {
+
+        classroomSelect.disabled = false;
+
+    }
+
+}
+
+
+deliveryMode.addEventListener(
+    "change",
+    updateClassroom
+);
+
+updateClassroom();
+
+
+// ==============================
+// Subject / Section → Lecturer
+// ==============================
+
+sectionSelect.addEventListener(
+    "change",
+    function () {
+
+        const selectedOption =
+            this.options[this.selectedIndex];
+
+        const facultyId =
+            selectedOption.dataset.facultyId;
+
+        lecturerSelect.value = "";
+
+        lecturerSelect
+            .querySelectorAll("option")
+            .forEach(function (option) {
+
+                if (!option.value) {
+                    option.hidden = false;
+                    return;
+                }
+
+                option.hidden =
+                    option.dataset.facultyId !== facultyId;
+
+            });
+
+    }
+);
+
+</script>
+
+{% endblock %}

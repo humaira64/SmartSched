@@ -1,0 +1,179 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Auto Generate Timetable{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Auto Generate Timetable</h2>
+
+        <p class="text-muted">
+            Automatically generate a timetable based on the assigned
+            timetable resources and scheduling constraints.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body p-4">
+
+        <form method="POST"
+              action="{{ url_for('generate_timetable') }}">
+
+            <div class="row g-4">
+
+                <!-- Academic Session -->
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Academic Session
+                    </label>
+
+                    <select name="session_id"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            Select Academic Session
+                        </option>
+
+                        {% for session in sessions %}
+
+                        <option value="{{ session.id }}">
+                            {{ session.session_code }}
+                            - {{ session.session_type }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Programme -->
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Programme
+                    </label>
+
+                    <select name="programme_id"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            Select Programme
+                        </option>
+
+                        {% for programme in programmes %}
+
+                        <option value="{{ programme.id }}">
+                            {{ programme.programme_code }}
+                            -
+                            {{ programme.programme_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Semester -->
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Semester
+                    </label>
+
+                    <select name="semester"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            Select Semester
+                        </option>
+
+                        <option value="1">
+                            Semester 1
+                        </option>
+
+                        <option value="2">
+                            Semester 2
+                        </option>
+
+                        <option value="3">
+                            Semester 3
+                        </option>
+
+                        <option value="4">
+                            Semester 4
+                        </option>
+
+                        <option value="5">
+                            Semester 5
+                        </option>
+
+                        <option value="6">
+                            Semester 6
+                        </option>
+
+                        <option value="7">
+                            Semester 7
+                        </option>
+
+                        <option value="8">
+                            Semester 8
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- Information -->
+
+            <div class="alert alert-info mt-4">
+
+                <i class="bi bi-info-circle me-2"></i>
+
+                The system will generate a timetable using the assigned
+                timetable resources for the selected academic session,
+                programme and semester.
+
+            </div>
+
+
+            <!-- Button -->
+
+            <div class="text-end">
+
+                <button type="submit"
+                        class="btn btn-primary px-4">
+
+                    <i class="bi bi-magic me-2"></i>
+                    Generate Timetable
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Complete Profile - SmartSched</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Custom CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6 col-lg-5">
+
+
+            <!-- Card -->
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+
+                    <!-- Header -->
+
+                    <div class="text-center mb-4">
+
+                        <i
+                            class="bi bi-person-circle"
+                            style="font-size: 55px;">
+                        </i>
+
+                        <h3 class="fw-bold mt-3">
+                            Complete Your Profile
+                        </h3>
+
+                        <p class="text-muted">
+                            Please provide your academic information
+                            before continuing.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Error -->
+
+                    {% if error %}
+
+                    <div class="alert alert-danger">
+
+                        {{ error }}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- Form -->
+
+                    <form
+                        method="POST"
+                        action="{{ url_for('complete_student_profile') }}">
+
+
+                        <!-- Faculty -->
+
+                        <div class="mb-3">
+
+                            <label
+                                for="faculty_id"
+                                class="form-label fw-semibold">
+
+                                Faculty
+
+                            </label>
+
+
+                            <select
+                                class="form-select"
+                                id="faculty_id"
+                                name="faculty_id"
+                                required>
+
+                                <option value="">
+                                    Select Faculty
+                                </option>
+
+
+                                {% for faculty in faculties %}
+
+                                <option value="{{ faculty.id }}">
+
+                                    {{ faculty.faculty_code }}
+                                    -
+                                    {{ faculty.faculty_name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Semester -->
+
+                        <div class="mb-4">
+
+                            <label
+                                for="current_semester"
+                                class="form-label fw-semibold">
+
+                                Current Semester
+
+                            </label>
+
+
+                            <select
+                                class="form-select"
+                                id="current_semester"
+                                name="current_semester"
+                                required>
+
+                                <option value="">
+                                    Select Semester
+                                </option>
+
+
+                                {% for semester in range(1, 9) %}
+
+                                <option value="{{ semester }}">
+
+                                    Semester {{ semester }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Submit -->
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100">
+
+                            Continue
+
+                        </button>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+
+            <div class="text-center mt-3 text-muted small">
+
+                © 2026 SmartSched |
+                Universiti Poly-Tech Malaysia
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Bootstrap JS -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>

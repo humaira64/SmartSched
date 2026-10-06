@@ -1,0 +1,325 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Assign Curriculum
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Assign Curriculum</h2>
+        <p class="text-muted">
+            Select subjects to be offered for an academic session.
+        </p>
+    </div>
+
+</div>
+
+
+<!-- Selection -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body">
+
+        <form method="GET"
+              action="{{ url_for('assign_curriculum') }}">
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md-5">
+
+                    <label class="form-label fw-semibold">
+                        Academic Session
+                    </label>
+
+                    <select name="session_id"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            Select Academic Session
+                        </option>
+
+                        {% for session in sessions %}
+
+                        <option
+                            value="{{ session.id }}"
+                            {% if selected_session_id|string == session.id|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ session.session_code }}
+                            - {{ session.session_type }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-5">
+
+                    <label class="form-label fw-semibold">
+                        Programme
+                    </label>
+
+                    <select name="programme_id"
+                            class="form-select"
+                            required>
+
+                        <option value="">
+                            Select Programme
+                        </option>
+
+                        {% for programme in programmes %}
+
+                        <option
+                            value="{{ programme.id }}"
+                            {% if selected_programme_id|string == programme.id|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ programme.programme_code }}
+                            - {{ programme.programme_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-2">
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+
+                        <i class="bi bi-search me-2"></i>
+                        Load
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{% if selected_programme_id %}
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h5 class="mb-1">
+                    Programme Curriculum
+                </h5>
+
+                <small class="text-muted">
+                    Select the subjects offered in this academic session.
+                </small>
+
+            </div>
+
+            {% if curriculum %}
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    id="selectAllBtn">
+
+                Select All
+
+            </button>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    {% if curriculum %}
+
+    <form method="POST"
+          action="{{ url_for('assign_curriculum') }}">
+
+        <input type="hidden"
+               name="session_id"
+               value="{{ selected_session_id }}">
+
+        <input type="hidden"
+               name="programme_id"
+               value="{{ selected_programme_id }}">
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+
+                        <tr>
+                            <th style="width:60px;"></th>
+                            <th>Subject</th>
+                            <th>Year</th>
+                            <th>Semester</th>
+                            <th>Curriculum Status</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for item in curriculum %}
+
+                        <tr>
+
+                            <td>
+
+                                {% if item.subject_id in offered_subject_ids %}
+
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        disabled
+                                        checked
+                                    >
+
+                                {% else %}
+
+                                    <input
+                                        type="checkbox"
+                                        name="curriculum_id"
+                                        value="{{ item.curriculum_id }}"
+                                        class="form-check-input subject-check"
+                                    >
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ item.subject_code }}
+                                </strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    {{ item.subject_name }}
+                                </small>
+
+                            </td>
+
+
+                            <td>
+                                Year {{ item.year }}
+                            </td>
+
+
+                            <td>
+                                Semester {{ item.semester }}
+                            </td>
+
+
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    {{ item.curriculum_status }}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-footer bg-white d-flex justify-content-end">
+
+            <button type="submit"
+                    class="btn btn-primary">
+
+                <i class="bi bi-check-lg me-2"></i>
+                Assign Selected Subjects
+
+            </button>
+
+        </div>
+
+    </form>
+
+    {% else %}
+
+    <div class="card-body text-center text-muted py-5">
+
+        <i class="bi bi-journal-x fs-1 d-block mb-3"></i>
+
+        No curriculum found for this programme.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const selectAllBtn = document.getElementById("selectAllBtn");
+
+    if (!selectAllBtn) return;
+
+    selectAllBtn.addEventListener("click", function () {
+
+        const checkboxes = document.querySelectorAll(
+            ".subject-check"
+        );
+
+        const allSelected = Array.from(checkboxes)
+            .every(checkbox => checkbox.checked);
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = !allSelected;
+        });
+
+        selectAllBtn.textContent =
+            allSelected ? "Select All" : "Deselect All";
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

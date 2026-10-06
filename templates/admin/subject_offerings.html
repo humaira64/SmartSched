@@ -1,0 +1,573 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Subject Offering
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Subject Offering</h2>
+        <p class="text-muted">
+            Manage subjects offered for each academic session and programme.
+        </p>
+    </div>
+
+    <a
+        href="{{ url_for('assign_curriculum') }}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-calendar-check me-2"></i>
+        Assign Curriculum
+    </a>
+
+</div>
+
+
+<!-- Filter -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <!-- Academic Session -->
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Academic Session
+                </label>
+
+                <select class="form-select" id="sessionFilter">
+
+                    <option value="">All Sessions</option>
+
+                    {% set sessions = [] %}
+
+                    {% for offering in offerings %}
+
+                        {% if offering.session_code and offering.session_code not in sessions %}
+
+                            {% set _ = sessions.append(offering.session_code) %}
+
+                            <option value="{{ offering.session_code }}">
+                                {{ offering.session_code }}
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Programme -->
+
+            <div class="col-md-5">
+
+                <label class="form-label">
+                    Programme
+                </label>
+
+                <select class="form-select" id="programmeFilter">
+
+                    <option value="">All Programmes</option>
+
+                    {% set programmes = [] %}
+
+                    {% for offering in offerings %}
+
+                        {% if offering.programme_code and offering.programme_code not in programmes %}
+
+                            {% set _ = programmes.append(offering.programme_code) %}
+
+                            <option value="{{ offering.programme_code }}">
+                                {{ offering.programme_code }} -
+                                {{ offering.programme_name }}
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Search -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Search Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="subjectSearch"
+                    class="form-control"
+                    placeholder="Subject code or name..."
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Subject Offering List -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Subject Offering List
+            </h5>
+
+            <span class="badge bg-primary">
+                {{ offerings|length }} Offerings
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Session</th>
+                        <th>Subject</th>
+                        <th>Programme</th>
+                        <th>Year</th>
+                        <th>Semester</th>
+                        <th>Curriculum Status</th>
+                        <th>Section</th>
+                        <th class="text-center">Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% if offerings %}
+
+                        {% for offering in offerings %}
+
+                        <tr>
+
+                            <!-- Session -->
+
+                            <td>
+                                <strong>
+                                    {{ offering.session_code }}
+                                </strong>
+                            </td>
+
+
+                            <!-- Subject -->
+
+                            <td>
+
+                                <strong>
+                                    {{ offering.subject_code }}
+                                </strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    {{ offering.subject_name }}
+                                </small>
+
+                            </td>
+
+
+                            <!-- Programme -->
+
+                            <td>
+
+                                <strong>
+                                    {{ offering.programme_code }}
+                                </strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    {{ offering.programme_name }}
+                                </small>
+
+                            </td>
+
+
+                            <!-- Year -->
+
+                            <td>
+                                Year {{ offering.year }}
+                            </td>
+
+
+                            <!-- Semester -->
+
+                            <td>
+                                Semester {{ offering.semester }}
+                            </td>
+
+
+                            <!-- Curriculum Status -->
+
+                            <td>
+
+                                {% if offering.curriculum_status == "Common Core" %}
+
+                                    <span class="badge bg-primary">
+                                        Common Core
+                                    </span>
+
+                                {% elif offering.curriculum_status == "Compulsory" %}
+
+                                    <span class="badge bg-success">
+                                        Compulsory
+                                    </span>
+
+                                {% elif offering.curriculum_status == "Discipline Core" %}
+
+                                    <span class="badge bg-info text-dark">
+                                        Discipline Core
+                                    </span>
+
+                                {% elif offering.curriculum_status == "Specialization" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Specialization
+                                    </span>
+
+                                {% elif offering.curriculum_status == "Elective" %}
+
+                                    <span class="badge bg-secondary">
+                                        Elective
+                                    </span>
+
+                                {% else %}
+
+                                    {{ offering.curriculum_status or "-" }}
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Section -->
+
+                            <td class="section-column">
+
+                                {% if offering.sections %}
+
+                                    <div class="section-grid">
+
+                                        {% for section in offering.sections %}
+
+                                            <span>
+                                                {{ section.section_code }}
+                                            </span>
+
+                                        {% endfor %}
+
+                                    </div>
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        Not set
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Action -->
+
+                            <td class="text-center">
+
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#sectionModal{{ offering.id }}"
+                                >
+                                    <i class="bi bi-layers"></i>
+                                    Sections
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- Section Modal -->
+
+                        <div
+                            class="modal fade"
+                            id="sectionModal{{ offering.id }}"
+                            tabindex="-1"
+                            aria-hidden="true"
+                        >
+
+                            <div class="modal-dialog modal-dialog-centered">
+
+                                <div class="modal-content">
+
+                                    <!-- Header -->
+
+                                    <div class="modal-header">
+
+                                        <div>
+
+                                            <h5 class="modal-title">
+                                                Manage Sections
+                                            </h5>
+
+                                            <small class="text-muted">
+                                                {{ offering.subject_code }}
+                                                - {{ offering.subject_name }}
+                                            </small>
+
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal"
+                                        ></button>
+
+                                    </div>
+
+
+                                    <!-- Body -->
+
+                                    <div class="modal-body">
+
+                                        <div class="mb-3">
+
+                                            <small class="text-muted">
+                                                Programme
+                                            </small>
+
+                                            <div class="fw-semibold">
+                                                {{ offering.programme_code }}
+                                                - {{ offering.programme_name }}
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="mb-3">
+
+                                            <small class="text-muted">
+                                                Academic Session
+                                            </small>
+
+                                            <div class="fw-semibold">
+                                                {{ offering.session_code }}
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="mb-3">
+
+                                            <small class="text-muted">
+                                                Curriculum
+                                            </small>
+
+                                            <div class="fw-semibold">
+                                                Year {{ offering.year }}
+                                                · Semester {{ offering.semester }}
+                                            </div>
+
+                                            <small class="text-muted">
+                                                {{ offering.curriculum_status }}
+                                            </small>
+
+                                        </div>
+
+
+                                        <hr>
+
+
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                            <strong>
+                                                Sections
+                                            </strong>
+
+                                            <span class="badge bg-primary">
+                                                {{ offering.sections|length }}
+                                            </span>
+
+                                        </div>
+
+
+                                        <!-- Sections -->
+
+                                        <div class="sections-scroll-area">
+
+                                            {% if offering.sections %}
+
+                                                {% for section in offering.sections %}
+
+                                                    <div class="d-flex justify-content-between align-items-center border rounded p-3 mb-2">
+
+                                                        <span class="fw-semibold">
+                                                            Section {{ section.section_code }}
+                                                        </span>
+
+                                                        <form
+                                                            method="POST"
+                                                            action="{{ url_for('delete_section', section_id=section.id) }}"
+                                                            onsubmit="return confirm('Are you sure you want to delete Section {{ section.section_code }}?');"
+                                                        >
+
+                                                            <button
+                                                                type="submit"
+                                                                class="btn btn-sm btn-outline-danger"
+                                                            >
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                {% endfor %}
+
+                                            {% else %}
+
+                                                <div class="text-center text-muted py-4">
+                                                    No sections added yet.
+                                                </div>
+
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <!-- Add Section -->
+
+                                        <div class="mt-3">
+
+                                            <label class="form-label">
+                                                Section Code
+                                            </label>
+
+                                            <form
+                                                method="POST"
+                                                action="{{ url_for('add_section', offering_id=offering.id) }}"
+                                            >
+
+                                                <div class="input-group">
+
+                                                    <input
+                                                        type="text"
+                                                        name="section_code"
+                                                        class="form-control"
+                                                        placeholder="e.g. 01"
+                                                        required
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-primary"
+                                                    >
+                                                        <i class="bi bi-plus-lg"></i>
+                                                        Add
+                                                    </button>
+
+                                                </div>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- Footer -->
+
+                                    <div class="modal-footer">
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-light"
+                                            data-bs-dismiss="modal"
+                                        >
+                                            Close
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="text-center text-muted py-5"
+                            >
+
+                                <i class="bi bi-journal-x fs-1 d-block mb-3"></i>
+
+                                No subject offerings available yet.
+
+                                <br>
+
+                                Add a subject offering to get started.
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

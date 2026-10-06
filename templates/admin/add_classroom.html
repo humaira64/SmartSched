@@ -1,0 +1,124 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Add New Classroom
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>Add New Classroom</h2>
+
+        <p class="text-muted">
+            Add a new classroom or venue to SmartSched.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+            Classroom Information
+        </h5>
+
+    </div>
+
+
+    <form method="POST">
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <!-- Classroom Code -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Classroom Code
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        name="classroom_code"
+                        class="form-control"
+                        placeholder="e.g. CR4.05"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Room Type -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Room Type
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <select
+                        name="room_type"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select room type
+                        </option>
+
+                        <option value="Lecture Room">
+                            Lecture Room
+                        </option>
+
+                        <option value="Computer Lab">
+                            Computer Lab
+                        </option>
+
+                        <option value="Tutorial Room">
+                            Tutorial Room
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-footer bg-white d-flex justify-content-end gap-2">
+
+            <a
+                href="{{ url_for('classrooms') }}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                <i class="bi bi-plus-lg me-2"></i>
+                Add Classroom
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,874 @@
+{% extends "base_student.html" %}
+
+{% block title %}My Timetable{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-3">
+
+    <!-- =========================================
+         PAGE HEADER
+         ========================================= -->
+        <div class="timetable-page-header">
+
+    <div class="timetable-page-title-row">
+
+        <h1 class="student-timetable-title">
+            My Timetable
+        </h1>
+
+        <div class="timetable-actions">
+
+            <button type="button"
+                    id="clearTimetableBtn"
+                    class="timetable-btn danger">
+
+                <i class="bi bi-trash"></i>
+                Clear Timetable
+
+            </button>
+            <button
+                type="button"
+                id="findSubjectsBtn"
+                class="timetable-btn">
+
+                <i class="bi bi-search"></i>
+                Find Subjects
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    {% if academic_session %}
+
+        <p class="student-timetable-session">
+            {{ academic_session.session_code }}
+
+            {% if academic_session.session_type %}
+                - {{ academic_session.session_type }}
+            {% endif %}
+        </p>
+
+    {% endif %}
+
+</div>
+
+    </div>
+
+
+    <!-- =========================================
+         TIMETABLE
+         ========================================= -->
+
+    <div
+        class="student-timetable-card"
+        id="timetableCapture">
+
+        <div class="student-timetable-card" id="timetableCapture">
+
+    <div class="student-timetable-topbar">
+
+        <div class="student-timetable-heading">
+            <h2>
+                {% if current_semester %}
+                    SEMESTER {{ current_semester }}
+                {% else %}
+                    SEMESTER -
+                {% endif %}
+            </h2>
+        </div>
+
+        <button type="button"
+                class="timetable-settings-btn"
+                id="timetableSettingsBtn">
+            <i class="bi bi-sliders"></i>
+            Settings
+        </button>
+
+    </div>
+
+
+    <!-- SETTINGS PANEL -->
+
+    <div class="timetable-settings-panel"
+         id="timetableSettingsPanel">
+
+        <div class="settings-header">
+            <strong>Timetable Settings</strong>
+
+            <button type="button"
+                    id="closeTimetableSettings">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="settings-option">
+            <span>Show Weekend</span>
+
+            <label class="settings-switch">
+                <input type="checkbox"
+                       id="showWeekendToggle" checked>
+                <span></span>
+            </label>
+        </div>
+
+        <div class="settings-option">
+            <span>White Background</span>
+
+            <label class="settings-switch">
+                <input type="checkbox"
+                       id="whiteBackgroundToggle"
+                       checked>
+                <span></span>
+            </label>
+        </div>
+
+    </div>
+
+
+    <!-- TIMETABLE -->
+
+    <div class="compact-timetable"
+         id="compactTimetable">
+
+        <!-- TIME HEADER -->
+
+        <div class="compact-header">
+
+            <div class="corner-cell"></div>
+
+            {% for hour in range(8, 22) %}
+
+                <div class="compact-time-header">
+                    {% if hour < 12 %}
+                        {{ hour }}AM
+                    {% elif hour == 12 %}
+                        12PM
+                    {% else %}
+                        {{ hour - 12 }}PM
+                    {% endif %}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- DAYS -->
+
+        {% set days = [
+            ("Monday", "MONDAY"),
+            ("Tuesday", "TUESDAY"),
+            ("Wednesday", "WEDNESDAY"),
+            ("Thursday", "THURSDAY"),
+            ("Friday", "FRIDAY"),
+            ("Saturday", "SATURDAY"),
+            ("Sunday", "SUNDAY")
+        ] %}
+
+
+        {% for day_name, day_label in days %}
+
+            <div class="compact-day-row"
+                 data-day="{{ day_name }}">
+
+                <div class="day-label">
+                    {{ day_label }}
+                </div>
+
+                <div class="day-hours">
+
+                    {% for hour in range(8, 22) %}
+
+                        <div class="compact-hour-cell"
+                             data-hour="{{ hour }}">
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+        <!-- HIDDEN SCHEDULE DATA -->
+
+        {% for item in timetable %}
+
+            <div class="student-schedule-data"
+                data-day="{{ item.day_of_week }}"
+                data-start="{{ item.start_time }}"
+                data-end="{{ item.end_time }}"
+                data-code="{{ item.subject_code }}"
+                data-name="{{ item.subject_name }}"
+                data-section="{{ item.section_code }}"
+                data-classroom="{{ item.classroom or 'Online' }}"
+                data-lecturer="{{ item.lecturer_name or 'Not assigned' }}"
+                data-delivery="{{ item.delivery_mode or 'Not specified' }}"
+                data-color="{{ item.color or '#DCEEFF' }}">
+            </div>
+
+        {% endfor %}
+
+        <div class="timetable-actions">
+
+            <button
+                type="button"
+                id="saveCurrentTimetableBtn"
+                class="timetable-btn">
+
+                <i class="bi bi-bookmark-check"></i>
+                Save Current Timetable
+
+            </button>
+
+            <button
+                type="button"
+                id="downloadPngBtn"
+                class="timetable-btn secondary">
+
+                <i class="bi bi-image"></i>
+                Download PNG
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================
+     CLASS DETAILS MODAL
+========================================= -->
+
+<div
+    class="modal fade"
+    id="classDetailsModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title">
+                        Class Details
+                    </h5>
+
+                    <small class="text-muted">
+                        Scheduled Class
+                    </small>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="class-detail-item">
+                    <small>Subject</small>
+                    <div id="detailSubject">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Section</small>
+                    <div id="detailSection">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Lecturer</small>
+                    <div id="detailLecturer">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Day</small>
+                    <div id="detailDay">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Time</small>
+                    <div id="detailTime">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Delivery Mode</small>
+                    <div id="detailDelivery">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Classroom</small>
+                    <div id="detailClassroom">-</div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     HTML2CANVAS
+     ========================================= -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =========================================
+       FIND SUBJECTS
+       ========================================= */
+
+    const findSubjectsBtn =
+        document.getElementById("findSubjectsBtn");
+
+    if (findSubjectsBtn) {
+
+        findSubjectsBtn.addEventListener("click", function () {
+
+            window.location.href = "/find-subjects";
+
+        });
+
+    }
+
+    /* =========================================
+   CLEAR TIMETABLE
+   ========================================= */
+
+const clearTimetableBtn =
+    document.getElementById("clearTimetableBtn");
+
+if (clearTimetableBtn) {
+
+    clearTimetableBtn.addEventListener("click", function () {
+
+        const confirmClear = confirm(
+            "Are you sure you want to clear your current timetable?"
+        );
+
+        if (!confirmClear) {
+            return;
+        }
+
+        fetch("/student/clear-timetable", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            if (data.success) {
+
+                alert(
+                    "Your timetable has been cleared successfully."
+                );
+
+                window.location.reload();
+
+            } else {
+
+                alert(
+                    data.message ||
+                    "Unable to clear timetable."
+                );
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            alert(
+                "Unable to clear timetable."
+            );
+
+        });
+
+    });
+
+}
+
+
+    /* =========================================
+       SAVE CURRENT TIMETABLE
+       ========================================= */
+
+    const saveBtn =
+        document.getElementById("saveCurrentTimetableBtn");
+
+    if (saveBtn) {
+
+        saveBtn.addEventListener("click", function () {
+
+            fetch("/student/save-current-timetable", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                }
+
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                if (data.success) {
+
+                    alert(
+                        "Your current semester timetable has been saved successfully."
+                    );
+
+                } else {
+
+                    alert(
+                        data.message ||
+                        "Unable to save timetable."
+                    );
+
+                }
+
+            })
+
+            .catch(error => {
+
+                console.error(error);
+
+                alert(
+                    "Unable to save timetable."
+                );
+
+            });
+
+        });
+
+    }
+
+
+    /* =========================================
+       TIMETABLE SETTINGS
+       ========================================= */
+
+    const START_HOUR = 8;
+
+    const HOUR_WIDTH = 1;
+
+
+    /* =========================================
+       TIME TO MINUTES
+       ========================================= */
+
+    function timeToMinutes(time) {
+
+        if (!time) {
+            return 0;
+        }
+
+        const parts =
+            time.toString().split(":");
+
+        const hour =
+            parseInt(parts[0]);
+
+        const minute =
+            parseInt(parts[1] || 0);
+
+        return (
+            hour * 60 +
+            minute
+        );
+
+    }
+
+
+    /* =========================================
+       FORMAT TIME
+       ========================================= */
+
+    function formatTime(time) {
+
+        if (!time) {
+            return "";
+        }
+
+        const parts =
+            time.toString().split(":");
+
+        return (
+            parts[0] +
+            ":" +
+            parts[1]
+        );
+
+    }
+
+
+    /* =========================================
+       LOAD SUBJECTS
+       ========================================= */
+
+    const schedules =
+        document.querySelectorAll(
+            ".student-schedule-data"
+        );
+
+
+    schedules.forEach(function (item) {
+
+        const day =
+            item.dataset.day;
+
+        const startTime =
+            item.dataset.start;
+
+        const endTime =
+            item.dataset.end;
+
+        const subjectCode =
+            item.dataset.code;
+
+        const subjectName =
+            item.dataset.name;
+
+        const section =
+            item.dataset.section;
+
+        const color =
+            item.dataset.color ||
+            "#DCEEFF";
+
+
+        /* ================================
+           FIND DAY ROW
+           ================================ */
+
+        const dayRow =
+            document.querySelector(
+                `.compact-day-row[data-day="${day}"]`
+            );
+
+        if (!dayRow) {
+            return;
+        }
+
+
+        const dayHours =
+            dayRow.querySelector(".day-hours");
+
+        if (!dayHours) {
+            return;
+        }
+
+
+        /* ================================
+           CALCULATE START POSITION
+           ================================ */
+
+        const startMinutes =
+            timeToMinutes(startTime);
+
+        const endMinutes =
+            timeToMinutes(endTime);
+
+        const timetableStart =
+            START_HOUR * 60;
+
+
+        const startOffset =
+            (startMinutes - timetableStart) / 60;
+
+
+        const duration =
+            (endMinutes - startMinutes) / 60;
+
+
+        if (duration <= 0) {
+            return;
+        }
+
+
+       /* ================================
+   CREATE SUBJECT CARD
+   ================================ */
+
+const card =
+    document.createElement("div");
+
+card.className =
+    "compact-subject-card";
+
+
+const classroom =
+    item.dataset.classroom || "Online";
+
+
+card.innerHTML = `
+
+    <div class="compact-subject-code">
+        ${subjectCode}
+    </div>
+
+    <div class="compact-subject-name">
+        ${subjectName}
+    </div>
+
+    <div class="compact-subject-section">
+        ${section}
+    </div>
+
+    <div class="compact-subject-time">
+        ${classroom}
+    </div>
+
+`;
+
+
+/* ================================
+   CARD POSITION
+   ================================ */
+
+card.style.left =
+    `calc(${startOffset} * (100% / 14))`;
+
+
+card.style.width =
+    `calc(${duration} * (100% / 14))`;
+
+
+card.style.backgroundColor =
+    color;
+
+
+dayHours.appendChild(card);
+
+card.addEventListener("click", function () {
+
+    document.getElementById("detailSubject").textContent =
+        `${subjectCode} - ${subjectName}`;
+
+    document.getElementById("detailSection").textContent =
+        section;
+
+    document.getElementById("detailLecturer").textContent =
+        item.dataset.lecturer || "Not assigned";
+
+    document.getElementById("detailDay").textContent =
+        day;
+
+    document.getElementById("detailTime").textContent =
+        `${formatTime(startTime)} - ${formatTime(endTime)}`;
+
+    document.getElementById("detailDelivery").textContent =
+        item.dataset.delivery || "Not specified";
+
+    document.getElementById("detailClassroom").textContent =
+        classroom;
+
+    const modal = new bootstrap.Modal(
+        document.getElementById("classDetailsModal")
+    );
+
+    modal.show();
+
+});
+
+    }); // END schedules.forEach
+
+
+    /* =====================================================
+       DOWNLOAD CURRENT TIMETABLE AS PNG
+       ===================================================== */
+
+    const downloadPngBtn =
+        document.getElementById("downloadPngBtn");
+
+    if (downloadPngBtn) {
+
+        downloadPngBtn.addEventListener("click", async function () {
+
+            const timetable =
+                document.getElementById("timetableCapture");
+
+            if (!timetable) {
+                return;
+            }
+
+
+            /* =========================================
+               CLONE CURRENT TIMETABLE
+               ========================================= */
+
+            const exportArea =
+                timetable.cloneNode(true);
+
+
+            /* =========================================
+               REMOVE BUTTONS FROM PNG
+               ========================================= */
+
+            exportArea
+                .querySelectorAll(
+                    "button, .timetable-actions"
+                )
+                .forEach(function (element) {
+
+                    element.remove();
+
+                });
+
+
+            /* =========================================
+               TEMPORARY EXPORT CONTAINER
+               ========================================= */
+
+            const wrapper =
+                document.createElement("div");
+
+            wrapper.style.position =
+                "fixed";
+
+            wrapper.style.left =
+                "-10000px";
+
+            wrapper.style.top =
+                "0";
+
+            wrapper.style.width =
+                timetable.offsetWidth + "px";
+
+            wrapper.style.background =
+                "transparent";
+
+            wrapper.style.padding =
+                "0";
+
+            wrapper.style.margin =
+                "0";
+
+            wrapper.style.zIndex =
+                "-1";
+
+
+            wrapper.appendChild(exportArea);
+
+            document.body.appendChild(wrapper);
+
+
+            /* =========================================
+               CAPTURE CURRENT TIMETABLE
+               ========================================= */
+
+            try {
+
+                const canvas =
+                    await html2canvas(
+                        exportArea,
+                        {
+                            scale: 2,
+                            useCORS: true,
+                            backgroundColor: null,
+                            logging: false,
+
+                            width:
+                                exportArea.scrollWidth,
+
+                            height:
+                                exportArea.scrollHeight
+                        }
+                    );
+
+
+                /* =====================================
+                   DOWNLOAD PNG
+                   ===================================== */
+
+                const link =
+                    document.createElement("a");
+
+                link.download =
+                    "SmartSched-Timetable.png";
+
+                link.href =
+                    canvas.toDataURL(
+                        "image/png"
+                    );
+
+                link.click();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Timetable download error:",
+                    error
+                );
+
+                alert(
+                    "Unable to download timetable."
+                );
+
+            }
+
+
+            /* =========================================
+               REMOVE TEMPORARY EXPORT
+               ========================================= */
+
+            wrapper.remove();
+
+        });
+
+    }
+
+}); // END DOMContentLoaded
+
+</script>
+
+{% endblock %}

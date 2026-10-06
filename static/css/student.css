@@ -1,0 +1,1048 @@
+/* =========================================
+   STUDENT STYLES
+   ========================================= */
+
+   .class-card {
+    background-color: #dbeafe;
+}
+
+
+.subject-page {
+    padding: 25px 32px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.page-header h1 {
+    color: #124878;
+    font-weight: 700;
+    margin: 0;
+}
+
+.page-header p {
+    color: #718096;
+    margin: 0;
+}
+
+/* =========================
+   FILTER CARD
+========================= */
+
+.filter-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 7px;
+    color: #1f2937;
+}
+
+.form-control-custom {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #d9e2ec;
+    border-radius: 9px;
+    padding: 0 14px;
+    font-size: 15px;
+    background: white;
+}
+
+.form-control-custom:focus {
+    outline: none;
+    border-color: #124878;
+    box-shadow: 0 0 0 2px rgba(18,72,120,0.1);
+}
+
+.search-row {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 15px;
+}
+
+.search-input {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #d9e2ec;
+    border-radius: 9px;
+    padding: 0 14px;
+    font-size: 15px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #124878;
+}
+
+.search-btn {
+    height: 48px;
+    border: none;
+    border-radius: 9px;
+    background: #124878;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background: #0d3d67;
+}
+
+/* =========================
+   SUBJECT AREA
+========================= */
+
+.subject-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 25px;
+}
+
+.subject-heading {
+    color: #124878;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.subject-list {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   SUBJECT CARD
+========================= */
+
+.subject-card {
+    border: 1px solid #dce5ee;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    padding: 17px;
+    cursor: pointer;
+    transition: 0.15s ease;
+    background: white;
+}
+
+.subject-card:hover {
+    border-color: #124878;
+    box-shadow: 0 3px 10px rgba(18,72,120,0.10);
+}
+
+.subject-card.selected {
+    border: 2px solid #124878;
+    background: #f2f7fb;
+}
+
+.subject-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.subject-code {
+    font-weight: 700;
+    color: #124878;
+    font-size: 15px;
+}
+
+.subject-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 3px;
+}
+
+.subject-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.info-badge {
+    background: #eef4f9;
+    color: #31566f;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.info-badge strong {
+    color: #124878;
+}
+
+.select-check {
+    width: 20px;
+    height: 20px;
+    accent-color: #124878;
+    cursor: pointer;
+}
+
+/* =========================
+   SELECTED SUBJECTS
+========================= */
+
+.selected-panel {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.selected-panel h2 {
+    color: #124878;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.selected-count {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.selected-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 0;
+}
+
+.selected-item:last-child {
+    border-bottom: none;
+}
+
+.selected-item-code {
+    color: #124878;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.selected-item-name {
+    color: #374151;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+.selected-item-section {
+    color: #6b7280;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.remove-selected {
+    border: none;
+    background: transparent;
+    color: #dc3545;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 5px;
+}
+
+.view-timetable-btn {
+    width: 100%;
+    margin-top: 18px;
+    height: 46px;
+    border: none;
+    border-radius: 8px;
+    background: #124878;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.view-timetable-btn:hover {
+    background: #0d3d67;
+}
+
+.view-timetable-btn:disabled {
+    background: #b8c2cc;
+    cursor: not-allowed;
+}
+
+.empty-selection {
+    color: #777;
+    font-size: 14px;
+    padding: 15px 0;
+}
+
+/* =========================
+   NO SUBJECT
+========================= */
+
+.no-subject {
+    text-align: center;
+    padding: 70px 20px;
+    color: #718096;
+}
+
+.no-subject-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.no-subject h3 {
+    color: #124878;
+    font-weight: 700;
+}
+
+/* =========================
+   FLASH
+========================= */
+
+.flash-message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.flash-success {
+    background: #e7f7ed;
+    color: #176b35;
+}
+
+.flash-danger {
+    background: #fdeaea;
+    color: #9b1c1c;
+}
+
+.flash-warning {
+    background: #fff5d9;
+    color: #856404;
+}
+
+@media (max-width: 1000px) {
+
+    .subject-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .selected-panel {
+        position: static;
+    }
+
+}
+
+@media (max-width: 800px) {
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-row {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =====================================================
+   STUDENT MY TIMETABLE
+   ===================================================== */
+
+.student-timetable-title {
+    color: #124878;
+    font-weight: 700;
+    margin: 0;
+}
+
+.student-timetable-session {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+}
+
+
+/* =====================================================
+   SMARTSCHED - UM STYLE TIMETABLE
+   ===================================================== */
+
+.student-timetable-card {
+    position: relative;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    overflow: visible;
+}
+
+
+/* =====================================================
+   TIMETABLE TOP BAR
+   ===================================================== */
+
+.student-timetable-topbar {
+    position: relative;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 20px;
+
+    background: #0b3c6d;
+    color: #ffffff;
+
+    border-radius: 18px 18px 0 0;
+}
+
+.student-timetable-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.student-timetable-heading h2 {
+    color: #ffffff;
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.student-timetable-heading span {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+
+/* =====================================================
+   SETTINGS BUTTON
+   ===================================================== */
+
+.timetable-settings-btn {
+    position: absolute;
+    right: 20px;
+    border: none;
+
+    background: #ffffff;
+    color: #0b3c6d;
+
+    border-radius: 20px;
+
+    padding: 7px 18px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.timetable-settings-btn:hover {
+    background: #eaf2f9;
+}
+
+
+/* =====================================================
+   SETTINGS PANEL
+   ===================================================== */
+
+.timetable-settings-panel {
+    position: absolute;
+
+    top: 52px;
+    right: 12px;
+
+    width: 300px;
+
+    background: #ffffff;
+
+    border-radius: 8px;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+
+    z-index: 100;
+
+    display: none;
+}
+
+.timetable-settings-panel.show {
+    display: block;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.settings-header strong {
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.settings-header button {
+    border: none;
+    background: none;
+
+    color: #777;
+
+    cursor: pointer;
+}
+
+
+.settings-option {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 15px 16px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #1f2937;
+}
+
+
+/* =====================================================
+   SWITCH
+   ===================================================== */
+
+.settings-switch {
+    position: relative;
+
+    width: 40px;
+    height: 22px;
+}
+
+.settings-switch input {
+    display: none;
+}
+
+.settings-switch span {
+    position: absolute;
+
+    inset: 0;
+
+    background: #d1d5db;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.settings-switch span::before {
+    content: "";
+
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    left: 2px;
+    top: 2px;
+
+    background: #ffffff;
+
+    border-radius: 50%;
+
+    transition: 0.2s;
+}
+
+.settings-switch input:checked + span {
+    background: #0b3c6d;
+}
+
+.settings-switch input:checked + span::before {
+    transform: translateX(18px);
+}
+
+
+/* =====================================================
+   TIMETABLE GRID
+   ===================================================== */
+
+.compact-timetable {
+    width: 100%;
+    background: #ffffff;
+
+    overflow-x: auto;
+
+    border-radius: 0 0 18px 18px;
+}
+
+
+/* =====================================================
+   TIME HEADER
+   ===================================================== */
+
+.compact-header {
+    display: grid;
+
+    grid-template-columns: 90px repeat(14, 1fr);
+
+    min-width: 1100px;
+
+    height: 36px;
+}
+
+.corner-cell,
+.compact-time-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid #bfc5cc;
+    border-bottom: 1px solid #bfc5cc;
+
+    box-sizing: border-box;
+}
+
+.corner-cell {
+    background: #ffffff;
+}
+
+.compact-time-header {
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   DAY ROW
+   ===================================================== */
+
+.compact-day-row {
+    display: grid;
+
+    grid-template-columns: 90px 1fr;
+
+    min-width: 1100px;
+
+    height: 95px;
+}
+
+
+/* =====================================================
+   DAY LABEL
+   ===================================================== */
+
+.day-label {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border-right: 1px solid #bfc5cc;
+    border-bottom: 1px solid #bfc5cc;
+
+    color: #111827;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   HOURS
+   ===================================================== */
+
+.day-hours {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: repeat(14, 1fr);
+
+    height: 95px;
+}
+
+
+/* =====================================================
+   HOUR CELLS
+   ===================================================== */
+
+.compact-hour-cell {
+    height: 95px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border-right: 1px solid #bfc5cc;
+    border-bottom: 1px solid #bfc5cc;
+}
+
+
+/* =====================================================
+   SUBJECT CARD
+   ===================================================== */
+
+.compact-subject-card {
+    position: absolute;
+
+    top: 4px;
+    bottom: 4px;
+
+    padding: 8px;
+
+    box-sizing: border-box;
+
+    border-radius: 8px;
+
+    border: 1px solid rgba(11, 60, 109, 0.15);
+
+    overflow: hidden;
+
+    z-index: 5;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.compact-subject-card:hover {
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+
+    z-index: 20;
+}
+
+
+/* =====================================================
+   SUBJECT CONTENT
+   ===================================================== */
+
+.compact-subject-code {
+    color: #0b3c6d;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+.compact-subject-name {
+    display: none;
+}
+
+.compact-subject-section {
+    color: #374151;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    margin-top: 3px;
+}
+
+.compact-subject-time {
+    color: #6b7280;
+
+    font-size: 9px;
+
+    margin-top: 4px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+    .timetable-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .timetable-actions {
+        margin-left: auto;
+    }
+
+    .compact-timetable {
+        min-width: 900px;
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .student-timetable {
+        overflow-x: auto;
+    }
+
+    .timetable-header,
+    .timetable-body {
+        min-width: 850px;
+    }
+
+}
+
+/* =====================================================
+   TIMETABLE CONFLICT
+   ===================================================== */
+
+.student-class-card.conflict-card {
+    background-color: #fde2e2 !important;
+    border: 2px solid #dc3545 !important;
+    color: #8b1e1e;
+}
+
+.student-class-card.conflict-card .student-class-code {
+    color: #b42318;
+}
+
+.student-class-card.conflict-card .student-class-name {
+    color: #8b1e1e;
+}
+
+.student-class-card.conflict-card .student-class-section,
+.student-class-card.conflict-card .student-class-time {
+    color: #a33a3a;
+}
+
+/* =====================================================
+   TIMETABLE CONFLICT NOTICE
+   ===================================================== */
+
+.timetable-conflict-notice {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 14px;
+
+    margin-bottom: 10px;
+
+    border-radius: 7px;
+
+    background-color: #fde2e2;
+    border: 1px solid #f5a5a5;
+
+    color: #a61b1b;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    box-sizing: border-box;
+}
+
+.timetable-conflict-notice i {
+    font-size: 15px;
+}
+
+
+/* Disabled buttons */
+
+.timetable-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.timetable-btn:disabled:hover {
+    background-color: #0b3c6d;
+    transform: none;
+}
+
+.timetable-btn.secondary:disabled:hover {
+    background-color: #eaf2f9;
+}
+
+/* =========================================
+   COMPACT TIMETABLE SLOTS
+   ========================================= */
+
+.compact-timetable-slot {
+    position: relative;
+
+    min-width: 0;
+    height: 64px;
+
+    background: #ffffff;
+
+    border-right: 1px solid #d9e3ee;
+    border-bottom: 1px solid #d9e3ee;
+
+    box-sizing: border-box;
+
+    overflow: visible;
+}
+
+/* =====================================================
+   CONFLICT SLOT
+   ===================================================== */
+
+.compact-timetable-slot.conflict-slot {
+    background-color: #fde2e2 !important;
+    border-color: #dc3545 !important;
+}
+
+.compact-timetable-slot.conflict-slot:hover {
+    background-color: #f8caca !important;
+}
+
+/* =========================================
+   MY TIMETABLE ACTION BUTTONS
+   ========================================= */
+
+.timetable-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding-bottom: 12px;
+}
+
+.timetable-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    background-color: #0b3c6d;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timetable-btn:hover {
+    background-color: #092f55;
+    transform: translateY(-1px);
+}
+
+.timetable-btn.secondary {
+    background-color: #eaf2f9;
+    color: #0b3c6d;
+    border: 1px solid #b8cde0;
+}
+
+.timetable-btn.secondary:hover {
+    background-color: #dceaf5;
+}
+
+.timetable-btn i {
+    font-size: 15px;
+}
+
+/* =====================================================
+   DARK BACKGROUND
+   ===================================================== */
+
+.compact-timetable.colored-background {
+    background: #1f2630;
+}
+
+.compact-timetable.colored-background
+.corner-cell,
+.compact-timetable.colored-background
+.compact-time-header,
+.compact-timetable.colored-background
+.day-label {
+    background: #1f2630;
+    color: #ffffff;
+}
+
+.compact-timetable.colored-background
+.compact-hour-cell {
+    background: #1f2630;
+}
+
+.compact-timetable.colored-background
+.compact-time-header,
+.compact-timetable.colored-background
+.corner-cell,
+.compact-timetable.colored-background
+.day-label,
+.compact-timetable.colored-background
+.compact-hour-cell {
+    border-color: #59616b;
+}
+
+/* =========================================
+   TIMETABLE PAGE HEADER
+========================================= */
+
+.timetable-page-header {
+    width: 100%;
+}
+
+.timetable-page-title-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.student-timetable-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.timetable-page-title-row .timetable-actions {
+    margin-left: auto;
+}
+
+.timetable-btn.danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.timetable-btn.danger:hover {
+    background-color: #bb2d3b;
+}

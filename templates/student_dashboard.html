@@ -1,0 +1,127 @@
+{% extends "base_student.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Banner -->
+
+<div class="welcome-banner">
+
+    <div>
+
+        <h2>👋 Welcome Back, {{ student.full_name.split()[0] }}!</h2>
+
+        <p class="mb-2">
+            Plan your timetable efficiently and avoid schedule conflicts.
+        </p>
+
+        <small>
+            {{ student.faculty_code }}
+            -
+            {{ student.faculty_name }}
+        </small>
+
+    </div>
+
+    <div class="text-end">
+
+        <span class="badge bg-success fs-6 mb-3">
+            No Conflict Detected
+        </span>
+
+        <br>
+
+        <a href="{{ url_for('find_subjects') }}" class="btn btn-light">
+            <i class="bi bi-search"></i>
+            Find Subjects
+        </a>
+
+    </div>
+
+</div>
+
+<!-- Academic Information -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <strong>Faculty</strong>
+
+                <p class="text-muted mb-0">
+                    {{ student.faculty_code }}
+                    -
+                    {{ student.faculty_name }}
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <strong>Semester</strong>
+
+                <p class="text-muted mb-0">
+                    Semester {{ student.current_semester }}
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <strong>Academic Session</strong>
+
+                <p class="text-muted mb-0">
+                    {% if academic_session %}
+                        {{ academic_session.session_code }}
+                    {% else %}
+                        No Active Session
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Quick Actions -->
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+
+        <a href="{{ url_for('find_subjects') }}" class="btn btn-primary w-100 py-3">
+
+            <i class="bi bi-search"></i>
+
+            Find Subjects
+
+        </a>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <a href="{{ url_for('my_timetable') }}" class="btn btn-outline-primary w-100 py-3">
+
+            <i class="bi bi-calendar-week"></i>
+
+            View My Timetable
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

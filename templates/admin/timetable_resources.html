@@ -1,0 +1,540 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Timetable Resources
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Timetable Setup</h2>
+
+        <p class="text-muted">
+            Assign lecturers, delivery modes and classrooms to the
+            subjects offered for the selected academic session.
+        </p>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FILTERS
+========================= -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body">
+
+        <form method="GET"
+              action="{{ url_for('timetable_resources') }}">
+
+            <div class="row g-3 align-items-end">
+
+                <!-- Academic Session -->
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Academic Session
+                    </label>
+
+                    <select
+                        name="session_id"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Academic Session
+                        </option>
+
+                        {% for session in sessions %}
+
+                        <option
+                            value="{{ session.id }}"
+                            {% if selected_session_id|string == session.id|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ session.session_code }}
+                            - {{ session.session_type }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Programme -->
+
+                <div class="col-md-4">
+
+                    <label class="form-label fw-semibold">
+                        Programme
+                    </label>
+
+                    <select
+                        name="programme_id"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Programme
+                        </option>
+
+                        {% for programme in programmes %}
+
+                        <option
+                            value="{{ programme.id }}"
+                            {% if selected_programme_id|string == programme.id|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ programme.programme_code }}
+                            -
+                            {{ programme.programme_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Semester -->
+
+                <div class="col-md-3">
+
+                    <label class="form-label fw-semibold">
+                        Semester
+                    </label>
+
+                    <select
+                        name="semester"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Semester
+                        </option>
+
+                        {% for item in semesters %}
+
+                        <option
+                            value="{{ item.semester }}"
+                            {% if selected_semester|string == item.semester|string %}
+                                selected
+                            {% endif %}
+                        >
+                            Semester {{ item.semester }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Find -->
+
+                <div class="col-md-1">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                        title="Find Resources"
+                    >
+
+                        <i class="bi bi-search"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     RESOURCE LIST
+========================= -->
+
+{% if selected_session_id
+   and selected_programme_id
+   and selected_semester %}
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+
+                <h5 class="mb-1">
+                    Timetable Resources
+                </h5>
+
+                <small class="text-muted">
+                    Assign resources for the selected subjects and sections.
+                </small>
+
+            </div>
+
+            <span class="badge bg-primary">
+                {{ resources|length }}
+                Resource{{ "s" if resources|length != 1 else "" }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    {% if resources %}
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle mb-0">
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject / Section</th>
+
+                    <th style="min-width: 220px;">
+                        Lecturer
+                    </th>
+
+                    <th style="min-width: 160px;">
+                        Mode
+                    </th>
+
+                    <th style="min-width: 220px;">
+                        Classroom
+                    </th>
+
+                    <th style="min-width: 130px;">
+                        Duration
+                    </th>
+
+                    <th style="width: 100px;">
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for resource in resources %}
+
+                <tr>
+
+                    <!-- Subject / Section -->
+
+                    <td>
+
+                        <strong>
+                            {{ resource.subject_code }}_{{ resource.section_code }}
+                        </strong>
+
+                        <br>
+
+                        <small class="text-muted">
+                            {{ resource.subject_name }}
+                        </small>
+
+                    </td>
+
+
+                    <!-- Lecturer -->
+
+                    <td>
+
+                        <select
+                            class="form-select form-select-sm"
+                            name="lecturer_id"
+                            form="resource-form-{{ resource.section_id }}"
+                        >
+
+                            <option value="">
+                                Select Lecturer
+                            </option>
+
+                            {% for lecturer in lecturers %}
+
+                            <option
+                                value="{{ lecturer.id }}"
+                                {% if resource.lecturer_id == lecturer.id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ lecturer.lecturer_name }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </td>
+
+
+                    <!-- Delivery Mode -->
+
+                    <td>
+
+                        <select
+                            class="form-select form-select-sm delivery-mode"
+                            name="delivery_mode"
+                            form="resource-form-{{ resource.section_id }}"
+                            data-section="{{ resource.section_id }}"
+                        >
+
+                            <option value="">
+                                Select Mode
+                            </option>
+
+                            <option
+                                value="Physical"
+                                {% if resource.delivery_mode == "Physical" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Physical
+                            </option>
+
+                            <option
+                                value="Online"
+                                {% if resource.delivery_mode == "Online" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Online
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
+                    <!-- Classroom -->
+
+                    <td>
+
+                        <select
+                            class="form-select form-select-sm classroom-select"
+                            name="classroom_id"
+                            form="resource-form-{{ resource.section_id }}"
+                            data-section="{{ resource.section_id }}"
+                            {% if resource.delivery_mode == "Online" %}
+                                disabled
+                            {% endif %}
+                        >
+
+                            <option value="">
+                                Select Classroom
+                            </option>
+
+                            {% for classroom in classrooms %}
+
+                            <option
+                                value="{{ classroom.id }}"
+                                {% if resource.classroom_id == classroom.id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ classroom.classroom_code }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </td>
+
+
+                    <!-- Duration -->
+
+                    <td>
+
+                        <select
+                            class="form-select form-select-sm"
+                            name="duration_periods"
+                            form="resource-form-{{ resource.section_id }}"
+                        >
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            {% for period in range(1, 5) %}
+
+                            <option
+                                value="{{ period }}"
+                                {% if resource.duration_periods == period %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ period }} period{{ "s" if period != 1 else "" }}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </td>
+
+
+                    <!-- Action -->
+
+                    <td>
+
+                        <form
+                            id="resource-form-{{ resource.section_id }}"
+                            method="POST"
+                            action="{{ url_for('save_timetable_resource') }}"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="section_id"
+                                value="{{ resource.section_id }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="session_id"
+                                value="{{ selected_session_id }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="programme_id"
+                                value="{{ selected_programme_id }}"
+                            >
+
+                            <input
+                                type="hidden"
+                                name="semester"
+                                value="{{ selected_semester }}"
+                            >
+
+                            <button
+                                type="submit"
+                                class="btn btn-sm btn-primary"
+                                title="Save Resource"
+                            >
+
+                                <i class="bi bi-check-lg"></i>
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="card-body text-center text-muted py-5">
+
+        <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+
+        No subjects or sections found for the selected
+        academic session, programme and semester.
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% else %}
+
+<!-- Empty State -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body text-center text-muted py-5">
+
+        <i class="bi bi-funnel fs-1 d-block mb-3"></i>
+
+        <h5>
+            Select filters to view timetable resources
+        </h5>
+
+        <p class="mb-0">
+            Select an Academic Session, Programme and Semester,
+            then click the search button.
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<script>
+
+// Enable / disable classroom based on delivery mode
+
+document.querySelectorAll(".delivery-mode").forEach(function (mode) {
+
+    mode.addEventListener("change", function () {
+
+        const sectionId = this.dataset.section;
+
+        const classroom =
+            document.querySelector(
+                '.classroom-select[data-section="' +
+                sectionId +
+                '"]'
+            );
+
+        if (this.value === "Online") {
+
+            classroom.value = "";
+            classroom.disabled = true;
+
+        } else {
+
+            classroom.disabled = false;
+
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

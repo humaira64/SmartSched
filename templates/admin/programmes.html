@@ -1,0 +1,253 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Programmes
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>Manage Programmes</h2>
+
+        <p class="text-muted">
+            Manage programmes available in SmartSched.
+        </p>
+
+    </div>
+
+    <a
+        href="{{ url_for('add_programme') }}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-plus-lg me-2"></i>
+        Add New Programme
+    </a>
+
+</div>
+
+
+<!-- Filters -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Search Programme
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search code or programme name..."
+                >
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Faculty
+                </label>
+
+                <select class="form-select">
+
+                    <option>All Faculties</option>
+
+                    {% for programme in programmes %}
+
+                        {% if loop.first or programme.faculty_code != programmes[loop.index0 - 1].faculty_code %}
+
+                            <option value="{{ programme.faculty_id }}">
+                                {{ programme.faculty_code }}
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <label class="form-label">
+                    Programme Level
+                </label>
+
+                <select class="form-select">
+
+                    <option>All Levels</option>
+                    <option>Foundation</option>
+                    <option>Diploma</option>
+                    <option>Bachelor</option>
+                    <option>Master</option>
+                    <option>PhD</option>
+                    <option>Professional</option>
+                    <option>Postgraduate Diploma</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Programme List -->
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Programme List
+            </h5>
+
+            <span class="badge bg-primary">
+                {{ programmes|length }} Programmes
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Code</th>
+                        <th>Programme</th>
+                        <th>Faculty</th>
+                        <th>Level</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% if programmes %}
+
+                        {% for programme in programmes %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    {{ programme.programme_code }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                {{ programme.programme_name }}
+                            </td>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ programme.faculty_code }}
+                                </strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    {{ programme.faculty_name }}
+                                </small>
+
+                            </td>
+
+
+                            <td>
+                                {{ programme.programme_level }}
+                            </td>
+
+
+                            <td>
+
+                                {% if programme.is_active %}
+
+    <a
+        href="{{ url_for('toggle_programme', programme_id=programme.id) }}"
+        class="btn btn-sm btn-success"
+        onclick="return confirm('Set this programme as inactive?');"
+    >
+        Active
+    </a>
+
+{% else %}
+
+    <a
+        href="{{ url_for('toggle_programme', programme_id=programme.id) }}"
+        class="btn btn-sm btn-secondary"
+        onclick="return confirm('Set this programme as active?');"
+    >
+        Inactive
+    </a>
+
+{% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="text-center text-muted py-5"
+                            >
+
+                                <i class="bi bi-mortarboard fs-1 d-block mb-3"></i>
+
+                                No programmes available yet.
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

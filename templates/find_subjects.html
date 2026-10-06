@@ -1,0 +1,670 @@
+{% extends "base_student.html" %}
+
+{% block title %}
+Find Subjects
+{% endblock %}
+
+{% block content %}
+
+
+<div class="subject-page">
+
+    <!-- =========================
+         PAGE HEADER
+    ========================== -->
+
+    <div class="page-header">
+
+        <div>
+            <h1>Find Subjects</h1>
+            <p>
+                Search and select available subjects for your timetable.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FILTER
+    ========================== -->
+
+    <form
+        method="GET"
+        action="{{ url_for('find_subjects') }}"
+        class="filter-card"
+    >
+
+        <div class="filter-grid">
+
+            <!-- Faculty -->
+
+            <div class="form-group">
+
+                <label>
+                    Faculty
+                </label>
+
+                <input
+                    type="text"
+                    class="form-control-custom"
+                    value="FCOM – Faculty of Computing and Multimedia"
+                    readonly
+                >
+
+            </div>
+
+
+            <!-- Programme -->
+
+            <div class="form-group">
+
+                <label for="programme">
+                    Programme
+                </label>
+
+                <select
+                    id="programme"
+                    name="programme"
+                    class="form-control-custom"
+                    onchange="this.form.submit()"
+                >
+
+                    {% for programme in faculty_programmes %}
+
+                        <option
+                            value="{{ programme.id }}"
+                            {% if selected_programme == programme.id %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ programme.programme_name }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Semester -->
+
+            <div class="form-group">
+
+                <label for="semester">
+                    Semester
+                </label>
+
+                <select
+                    id="semester"
+                    name="semester"
+                    class="form-control-custom"
+                    onchange="this.form.submit()"
+                >
+
+                    <option
+                        value="all"
+                        {% if selected_semester == "all" %}
+                            selected
+                        {% endif %}
+                    >
+                        All Semesters
+                    </option>
+
+                    {% for semester in range(1, 9) %}
+
+                        <option
+                            value="{{ semester }}"
+                            {% if selected_semester == semester|string %}
+                                selected
+                            {% endif %}
+                        >
+                            Semester {{ semester }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="subjectSearch"
+                class="search-input"
+                placeholder="Search by subject code or subject name"
+            >
+
+            <button
+                type="button"
+                class="search-btn"
+                onclick="filterSubjects()"
+            >
+                🔍 Search
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- =========================
+         SUBJECT + SELECTED AREA
+    ========================== -->
+
+    <div class="subject-layout">
+
+
+        <!-- =====================
+             AVAILABLE SUBJECTS
+        ====================== -->
+
+        <div>
+
+            <div class="subject-heading">
+
+                Available Subjects
+
+                <span
+                    style="
+                        color:#718096;
+                        font-size:14px;
+                        font-weight:400;
+                    "
+                >
+                    ({{ subjects|length }} available)
+                </span>
+
+            </div>
+
+
+            <div class="subject-list">
+
+                {% if subjects %}
+
+                    {% for subject in subjects %}
+
+                        <div
+                            class="subject-card
+                            {% if subject.is_selected %}
+                                selected
+                            {% endif %}"
+                            data-search="
+                                {{ subject.subject_code }}
+                                {{ subject.subject_name }}
+                                {{ subject.section_code }}
+                            "
+                            data-section-id="{{ subject.section_id }}"
+                        >
+
+                            <div class="subject-top">
+
+                                <div>
+
+                                    <div class="subject-code">
+                                        {{ subject.subject_code }}
+                                    </div>
+
+                                    <div class="subject-name">
+                                        {{ subject.subject_name }}
+                                    </div>
+
+                                </div>
+
+
+                                <input
+                                    type="checkbox"
+                                    class="select-check"
+                                    value="{{ subject.section_id }}"
+                                    data-offering-id="{{ subject.offering_id }}"
+                                    data-code="{{ subject.subject_code }}"
+                                    data-name="{{ subject.subject_name }}"
+                                    data-section="{{ subject.section_code }}"
+                                    {% if subject.is_selected %}
+                                        checked
+                                    {% endif %}
+                                >
+
+                            </div>
+
+
+                            <div class="subject-info">
+
+                                <span class="info-badge">
+                                    <strong>Section:</strong>
+                                    {{ subject.section_code }}
+                                </span>
+
+                                <span class="info-badge">
+                                    <strong>Semester:</strong>
+                                    {{ subject.semester }}
+                                </span>
+
+                                <span class="info-badge">
+                                    <strong>Day:</strong>
+                                    {{ subject.day_of_week }}
+                                </span>
+
+                                <span class="info-badge">
+                                    <strong>Time:</strong>
+                                    {{ subject.start_time|string|truncate(5, True, '') }}
+                                    -
+                                    {{ subject.end_time|string|truncate(5, True, '') }}
+                                </span>
+
+                                {% if subject.lecturer_name %}
+
+                                    <span class="info-badge">
+                                        <strong>Lecturer:</strong>
+                                        {{ subject.lecturer_name }}
+                                    </span>
+
+                                {% endif %}
+
+                                {% if subject.classroom_code %}
+
+                                    <span class="info-badge">
+                                        <strong>Room:</strong>
+                                        {{ subject.classroom_code }}
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="no-subject">
+
+                        <div class="no-subject-icon">
+                            📅
+                        </div>
+
+                        <h3>
+                            No Subjects Available
+                        </h3>
+
+                        <p>
+                            No scheduled subjects are currently available
+                            for your selected programme and semester.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             SELECTED SUBJECTS
+        ====================== -->
+
+        <div class="selected-panel">
+
+            <h2>
+                My Selected Subjects
+            </h2>
+
+            <div
+                class="selected-count"
+                id="selectedCount"
+            >
+                0 subject selected
+            </div>
+
+
+            <div id="selectedSubjectList">
+
+                <div class="empty-selection">
+                    No subject selected.
+                </div>
+
+            </div>
+
+
+            <form
+                id="selectedSubjectsForm"
+                method="POST"
+                action="{{ url_for('save_selected_subjects') }}"
+            >
+
+                <div id="selectedInputs"></div>
+
+
+                <button
+                    type="submit"
+                    id="viewTimetableBtn"
+                    class="view-timetable-btn"
+                    disabled
+                >
+                    📅 View My Timetable
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const findSubjectsBtn = document.getElementById("findSubjectsBtn");
+
+if (findSubjectsBtn) {
+    findSubjectsBtn.addEventListener("click", function () {
+        window.location.href = "/find-subjects";
+    });
+}
+
+    const cards =
+        document.querySelectorAll(".subject-card");
+
+    const checkboxes =
+        document.querySelectorAll(".select-check");
+
+    const selectedList =
+        document.getElementById("selectedSubjectList");
+
+    const selectedInputs =
+        document.getElementById("selectedInputs");
+
+    const selectedCount =
+        document.getElementById("selectedCount");
+
+    const viewButton =
+        document.getElementById("viewTimetableBtn");
+
+
+    function updateSelectedSubjects() {
+
+        selectedList.innerHTML = "";
+        selectedInputs.innerHTML = "";
+
+        let selected = [];
+
+
+        checkboxes.forEach(function (checkbox) {
+
+            if (checkbox.checked) {
+
+                selected.push({
+                    sectionId: checkbox.value,
+                    offeringId: checkbox.dataset.offeringId,
+                    code: checkbox.dataset.code,
+                    name: checkbox.dataset.name,
+                    section: checkbox.dataset.section
+                });
+
+            }
+
+        });
+
+
+        selectedCount.textContent =
+            selected.length +
+            (
+                selected.length === 1
+                    ? " subject selected"
+                    : " subjects selected"
+            );
+
+
+        if (selected.length === 0) {
+
+            selectedList.innerHTML = `
+                <div class="empty-selection">
+                    No subject selected.
+                </div>
+            `;
+
+            viewButton.disabled = true;
+
+            return;
+
+        }
+
+
+        viewButton.disabled = false;
+
+
+        selected.forEach(function (item) {
+
+            const div =
+                document.createElement("div");
+
+            div.className =
+                "selected-item";
+
+
+            div.innerHTML = `
+
+                <div class="selected-item-code">
+                    ${item.code}
+                </div>
+
+                <div class="selected-item-name">
+                    ${item.name}
+                </div>
+
+                <div class="selected-item-section">
+                    Section ${item.section}
+                </div>
+
+                <button
+                    type="button"
+                    class="remove-selected"
+                    data-section="${item.sectionId}"
+                >
+                    Remove
+                </button>
+
+            `;
+
+
+            div.querySelector(".remove-selected")
+                .addEventListener("click", function () {
+
+                    const target =
+                        document.querySelector(
+                            `.select-check[value="${item.sectionId}"]`
+                        );
+
+                    if (target) {
+
+                        target.checked = false;
+
+                        updateCardState(target);
+
+                        updateSelectedSubjects();
+
+                    }
+
+                });
+
+
+            selectedList.appendChild(div);
+
+
+            const sectionInput =
+                document.createElement("input");
+
+            sectionInput.type = "hidden";
+            sectionInput.name = "section_ids";
+            sectionInput.value = item.sectionId;
+
+            selectedInputs.appendChild(
+                sectionInput
+            );
+
+
+            const offeringInput =
+                document.createElement("input");
+
+            offeringInput.type = "hidden";
+            offeringInput.name = "offering_ids";
+
+            offeringInput.value =
+                item.offeringId;
+
+            selectedInputs.appendChild(
+                offeringInput
+            );
+
+        });
+
+    }
+
+
+    function updateCardState(checkbox) {
+
+        const card =
+            checkbox.closest(".subject-card");
+
+        if (!card) {
+            return;
+        }
+
+
+        if (checkbox.checked) {
+
+            card.classList.add("selected");
+
+        } else {
+
+            card.classList.remove("selected");
+
+        }
+
+    }
+
+
+    checkboxes.forEach(function (checkbox) {
+
+        checkbox.addEventListener(
+            "change",
+            function () {
+
+                updateCardState(this);
+
+                updateSelectedSubjects();
+
+            }
+        );
+
+    });
+
+
+    cards.forEach(function (card) {
+
+        card.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target.tagName === "INPUT" ||
+                    event.target.tagName === "BUTTON"
+                ) {
+                    return;
+                }
+
+
+                const checkbox =
+                    card.querySelector(".select-check");
+
+
+                if (!checkbox) {
+                    return;
+                }
+
+
+                checkbox.checked =
+                    !checkbox.checked;
+
+
+                updateCardState(checkbox);
+
+                updateSelectedSubjects();
+
+            }
+        );
+
+    });
+
+
+    updateSelectedSubjects();
+
+});
+
+
+function filterSubjects() {
+
+    const searchInput =
+        document.getElementById("subjectSearch");
+
+    const value =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const cards =
+        document.querySelectorAll(".subject-card");
+
+
+    cards.forEach(function (card) {
+
+        const text =
+            card.dataset.search
+                .toLowerCase();
+
+
+        if (
+            value === "" ||
+            text.includes(value)
+        ) {
+
+            card.style.display = "block";
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+document
+    .getElementById("subjectSearch")
+    .addEventListener(
+        "input",
+        filterSubjects
+    );
+
+</script>
+
+{% endblock %}

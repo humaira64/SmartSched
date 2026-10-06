@@ -1,0 +1,226 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Add New Subject
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h2>Add New Subject</h2>
+        <p class="text-muted">
+            Add a new subject to the Subject Master.
+        </p>
+    </div>
+
+    <a href="{{ url_for('manage_subjects') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>
+        Back
+    </a>
+
+</div>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        {% for category, message in messages %}
+
+            <div class="alert alert-{{ category }} alert-dismissible fade show mt-3">
+
+                {% if category == "warning" %}
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                {% else %}
+                    <i class="bi bi-check-circle me-2"></i>
+                {% endif %}
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert">
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body p-4">
+
+        <form method="POST">
+
+            <div class="row g-4">
+
+                <!-- Subject Code -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Subject Code
+                    </label>
+
+                    <input
+                        type="text"
+                        name="subject_code"
+                        class="form-control"
+                        placeholder="e.g. ARC2173"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Subject Name -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Subject Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="subject_name"
+                        class="form-control"
+                        placeholder="e.g. Computer Organization and Architecture"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Credit Hours -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Credit Hours
+                    </label>
+
+                    <input
+                        type="number"
+                        name="credit_hour"
+                        class="form-control"
+                        min="1"
+                        max="10"
+                        placeholder="3"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Contact Hours -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Contact Hours
+                    </label>
+
+                    <input
+                        type="number"
+                        name="contact_hour"
+                        class="form-control"
+                        min="1"
+                        max="20"
+                        placeholder="3"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Faculty / Unit -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Faculty / Unit
+                    </label>
+
+                    <select
+                        name="faculty_id"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Faculty / Unit
+                        </option>
+
+                        {% for faculty in faculties %}
+
+                            <option value="{{ faculty.id }}">
+                                {{ faculty.faculty_code }} - {{ faculty.faculty_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Status -->
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Status
+                    </label>
+
+                    <select
+                        name="is_active"
+                        class="form-select"
+                    >
+
+                        <option value="1" selected>
+                            Active
+                        </option>
+
+                        <option value="0">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4">
+
+
+            <div class="d-flex justify-content-end gap-2">
+
+                <a
+                    href="{{ url_for('manage_subjects') }}"
+                    class="btn btn-light"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-check-lg me-2"></i>
+                    Save Subject
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

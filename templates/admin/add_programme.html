@@ -1,0 +1,222 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Add New Programme
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>Add New Programme</h2>
+
+        <p class="text-muted">
+            Add a new programme to SmartSched.
+        </p>
+
+    </div>
+
+    <a
+        href="{{ url_for('programmes') }}"
+        class="btn btn-outline-secondary"
+    >
+        <i class="bi bi-arrow-left me-2"></i>
+        Back
+    </a>
+
+</div>
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        {% for category, message in messages %}
+
+            <div class="alert alert-{{ category }} alert-dismissible fade show mt-3">
+
+                {% if category == "warning" %}
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                {% else %}
+                    <i class="bi bi-check-circle me-2"></i>
+                {% endif %}
+
+                {{ message }}
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                ></button>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body p-4">
+
+        <form method="POST">
+
+            <div class="row g-4">
+
+                <!-- Programme Code -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Programme Code
+                    </label>
+
+                    <input
+                        type="text"
+                        name="programme_code"
+                        class="form-control"
+                        placeholder="e.g. CT206"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Programme Level -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Programme Level
+                    </label>
+
+                    <select
+                        name="programme_level"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Level
+                        </option>
+
+                        <option value="Foundation">
+                            Foundation
+                        </option>
+
+                        <option value="Diploma">
+                            Diploma
+                        </option>
+
+                        <option value="Bachelor">
+                            Bachelor
+                        </option>
+
+                        <option value="Master">
+                            Master
+                        </option>
+
+                        <option value="PhD">
+                            PhD
+                        </option>
+
+                        <option value="Professional">
+                            Professional
+                        </option>
+
+                        <option value="Postgraduate Diploma">
+                            Postgraduate Diploma
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Programme Name -->
+
+                <div class="col-md-12">
+
+                    <label class="form-label">
+                        Programme Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="programme_name"
+                        class="form-control"
+                        placeholder="e.g. Bachelor of Information Technology (Honours) in Cyber Security"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Faculty -->
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Faculty
+                    </label>
+
+                    <select
+                        name="faculty_id"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Faculty
+                        </option>
+
+                        {% for faculty in faculties %}
+
+                        <option value="{{ faculty.id }}">
+                            {{ faculty.faculty_code }} -
+                            {{ faculty.faculty_name }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <hr class="my-4">
+
+
+            <div class="d-flex justify-content-end gap-2">
+
+                <a
+                    href="{{ url_for('programmes') }}"
+                    class="btn btn-light"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-check-lg me-2"></i>
+                    Save Programme
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

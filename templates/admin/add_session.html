@@ -1,0 +1,107 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Add Academic Session
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>Add Academic Session</h2>
+
+        <p class="text-muted">
+            Add a new academic session.
+        </p>
+
+    </div>
+
+    <a
+        href="{{ url_for('academic_sessions') }}"
+        class="btn btn-outline-secondary"
+    >
+        <i class="bi bi-arrow-left me-2"></i>
+        Back
+    </a>
+
+</div>
+
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-body p-4">
+
+        <form method="POST">
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Academic Session
+                </label>
+
+                <input
+                    type="text"
+                    name="session_code"
+                    class="form-control"
+                    placeholder="e.g. 0627"
+                    maxlength="20"
+                    required
+                >
+
+                <small class="text-muted">
+                    Enter the academic session code, for example 0627.
+                </small>
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Session Type
+                    </label>
+
+                    <select
+                        name="session_type"
+                        class="form-select"
+                        required
+                    >
+                        <option value="">Select Session Type</option>
+                        <option value="Short Semester">Short Semester</option>
+                        <option value="Long Semester">Long Semester</option>
+                    </select>
+
+                    <small class="text-muted">
+                        Select the type of academic session.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="d-flex justify-content-end gap-2">
+
+                <a
+                    href="{{ url_for('academic_sessions') }}"
+                    class="btn btn-light"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    <i class="bi bi-check-lg me-2"></i>
+                    Save Session
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

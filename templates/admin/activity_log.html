@@ -1,0 +1,144 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Activity Log - SmartSched Admin{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4 py-4">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                Activity Log
+            </h2>
+
+            <p class="text-muted mb-0">
+                Latest actions performed by administrators.
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="btn btn-outline-primary">
+
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- Activity Table -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            {% if activities %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Administrator</th>
+                            <th>Module</th>
+                            <th>Action</th>
+                            <th>Description</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for activity in activities %}
+
+                        <tr>
+
+                            <td>
+                                <div class="fw-semibold">
+                                    {{ activity.created_at.strftime('%d/%m/%Y') }}
+                                </div>
+
+                                <small class="text-muted">
+                                    {{ activity.created_at.strftime('%I:%M %p') }}
+                                </small>
+                            </td>
+
+
+                            <td>
+
+                                <div class="fw-semibold">
+                                    {{ activity.full_name }}
+                                </div>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="badge bg-light text-dark border">
+                                    {{ activity.module }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="fw-semibold">
+                                    {{ activity.action }}
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                {{ activity.description }}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <!-- Empty State -->
+
+            <div class="text-center py-5">
+
+                <i class="bi bi-clock-history"
+                   style="font-size: 45px; color: #6c757d;">
+                </i>
+
+                <h5 class="mt-3">
+                    No admin activity recorded yet.
+                </h5>
+
+                <p class="text-muted mb-0">
+                    Administrator activities will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

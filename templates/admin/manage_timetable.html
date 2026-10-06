@@ -1,0 +1,498 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Timetable
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h2>Manage Timetable</h2>
+        <p class="text-muted">
+            Create and manage the timetable for each academic session and programme.
+        </p>
+    </div>
+
+    <button
+        type="button"
+        class="btn btn-primary"
+        id="createNewTimetableBtn"
+    >
+        <i class="bi bi-plus-lg me-1"></i>
+        Create New Timetable
+    </button>
+</div>
+
+
+<!-- FILTERS -->
+
+<div class="card shadow-sm mt-4">
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            <!-- Academic Session -->
+            <div class="col-md-4">
+                <label for="sessionFilter" class="form-label">
+                    Academic Session
+                </label>
+
+                <select
+                    class="form-select"
+                    id="sessionFilter"
+                    name="session"
+                >
+                    <option value="">Select Academic Session</option>
+
+                    {% for session_item in sessions %}
+                    <option
+                        value="{{ session_item.id }}"
+                        {% if selected_session|string == session_item.id|string %}
+                        selected
+                        {% endif %}
+                    >
+                        {{ session_item.session_code }}
+                        {% if session_item.session_type %}
+                            - {{ session_item.session_type }}
+                        {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <!-- Programme -->
+            <div class="col-md-4">
+                <label for="programmeFilter" class="form-label">
+                    Programme
+                </label>
+
+                <select
+                    class="form-select"
+                    id="programmeFilter"
+                    name="programme"
+                >
+                    <option value="">Select Programme</option>
+
+                    {% for programme in programmes %}
+                    <option
+                        value="{{ programme.id }}"
+                        {% if selected_programme|string == programme.id|string %}
+                        selected
+                        {% endif %}
+                    >
+                        {{ programme.programme_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <!-- Semester -->
+            <div class="col-md-4">
+                <label for="semesterFilter" class="form-label">
+                    Semester
+                </label>
+
+                <select
+                    class="form-select"
+                    id="semesterFilter"
+                    name="semester"
+                >
+                    <option value="">Select Semester</option>
+
+                    {% for semester in semesters %}
+                    <option
+                        value="{{ semester.semester }}"
+                        {% if selected_semester == semester.semester|string %}
+                        selected
+                        {% endif %}
+                    >
+                        Semester {{ semester.semester }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+
+        <div class="text-end mt-3">
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="findTimetableBtn"
+            >
+                <i class="bi bi-search me-1"></i>
+                Find Timetable
+            </button>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- =========================================
+     WEEKLY TIMETABLE
+========================================= -->
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-body">
+
+        <div class="timetable-wrapper">
+
+            {% set days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] %}
+
+            {% for day in days %}
+
+            <div class="day-timetable">
+
+                <div class="day-title">
+                    {{ day.upper() }}
+                </div>
+
+                <table class="timetable-grid">
+
+                    <!-- PERIOD HEADER -->
+
+                    <tr class="period-header">
+
+                        {% for period in range(1, 15) %}
+
+                        <th
+                            class="period-header-cell"
+                            data-day="{{ day }}"
+                            data-period="{{ period }}"
+                            title="{{ period }}"
+                        >
+                            <span class="period-number">
+                                {{ period }}
+                            </span>
+
+                        </th>
+
+                        {% endfor %}
+
+                    </tr>
+
+
+                    <!-- SLOTS -->
+
+                    <tr class="timetable-row">
+
+                        {% for period in range(1, 15) %}
+
+                        <td
+                            class="timetable-slot"
+                            data-day="{{ day }}"
+                            data-period="{{ period }}"
+                        >
+                        </td>
+
+                        {% endfor %}
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SAVE -->
+
+<div class="d-flex justify-content-end mt-3 mb-4">
+
+    <button
+        type="button"
+        class="btn btn-primary px-4"
+        id="saveTimetableBtn"
+    >
+        <i class="bi bi-save me-2"></i>
+        Update Timetable
+    </button>
+
+</div>
+
+
+<!-- =========================================
+     SUBJECT SELECTION MODAL
+========================================= -->
+
+<div
+    class="modal fade"
+    id="subjectModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title">
+                        Select Subject
+                    </h5>
+
+                    <small
+                        class="text-muted"
+                        id="selectedSlot"
+                    >
+                        Select a timetable slot
+                    </small>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="subjectSearch"
+                        placeholder="Search subject or section..."
+                    >
+
+                </div>
+
+
+                <div
+                    class="subject-selection-list"
+                    id="subjectSelectionList"
+                >
+
+                    {% for item in timetable_resources %}
+
+                    <button
+                        type="button"
+                        class="subject-option"
+
+                        data-resource-id="{{ item.resource_id }}"
+                        data-section-id="{{ item.section_id }}"
+
+                        data-code="{{ item.subject_code }}"
+                        data-name="{{ item.subject_name }}"
+                        data-section="{{ item.section_code }}"
+
+                        data-color="{{ item.color }}"
+
+                        data-lecturer-id="{{ item.lecturer_id }}"
+                        data-lecturer="{{ item.lecturer_name }}"
+
+                        data-delivery="{{ item.delivery_mode }}"
+
+                        data-classroom-id="{{ item.classroom_id or '' }}"
+                        data-classroom="{{ item.classroom_code or '' }}"
+
+                        data-duration="{{ item.duration_periods }}"
+                    >
+
+                        <strong>
+                            {{ item.subject_code }} -
+                            {{ item.section_code }}
+                        </strong>
+
+                        <span>
+                            {{ item.subject_name }}
+                        </span>
+
+                        <small>
+                            {{ item.delivery_mode }}
+                            •
+                            {{ item.duration_periods }}
+                            period{% if item.duration_periods > 1 %}s{% endif %}
+                        </small>
+
+                    </button>
+
+                    {% else %}
+
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                        No subject sections available.
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     EXISTING SCHEDULE DATA
+========================================= -->
+
+<div id="existingSchedules" class="d-none">
+
+    {% for schedule in schedules %}
+
+    <div
+        class="schedule-data"
+
+        data-id="{{ schedule.id }}"
+
+        data-section-id="{{ schedule.section_id }}"
+        data-lecturer-id="{{ schedule.lecturer_id }}"
+        data-classroom-id="{{ schedule.classroom_id or '' }}"
+
+        data-day="{{ schedule.day_of_week }}"
+        data-start="{{ schedule.start_time }}"
+        data-end="{{ schedule.end_time }}"
+
+        data-delivery="{{ schedule.delivery_mode }}"
+
+        data-code="{{ schedule.subject_code }}"
+        data-name="{{ schedule.subject_name }}"
+        data-section="{{ schedule.section_code }}"
+
+        data-color="{{ schedule.color }}"
+
+        data-lecturer="{{ schedule.lecturer_name }}"
+        data-classroom="{{ schedule.classroom_code or '' }}"
+    ></div>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- =========================================
+     CLASS DETAILS MODAL
+========================================= -->
+
+<div
+    class="modal fade"
+    id="classDetailsModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title">
+                        Class Details
+                    </h5>
+
+                    <small
+                        class="text-muted"
+                        id="classDetailsSubtitle"
+                    >
+                        Scheduled Class
+                    </small>
+                </div>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="class-detail-item">
+                    <small>Subject</small>
+                    <div id="detailSubject">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Section</small>
+                    <div id="detailSection">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Lecturer</small>
+                    <div id="detailLecturer">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Day</small>
+                    <div id="detailDay">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Time</small>
+                    <div id="detailTime">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Delivery Mode</small>
+                    <div id="detailDelivery">-</div>
+                </div>
+
+                <div class="class-detail-item">
+                    <small>Classroom</small>
+                    <div id="detailClassroom">-</div>
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

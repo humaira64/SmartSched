@@ -901,6 +901,7 @@ def google_login():
             db = mysql.connector.connect(**db_config)
 
             return db
+        ensure_db_connection()
         cursor = db.cursor(dictionary=True)
 
         # Check whether student already exists

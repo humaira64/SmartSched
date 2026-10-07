@@ -349,13 +349,29 @@ def auto_log_admin_activity(response):
 
     return response
 
-db = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),
-    user=os.getenv("DB_USER"),
-    password=os.getenv("DB_PASSWORD"),
-    database=os.getenv("DB_NAME"),
-    buffered=True
-)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+DB_SSL_CA = os.getenv("DB_SSL_CA", "")
+
+if DB_SSL_CA and not os.path.isabs(DB_SSL_CA):
+    DB_SSL_CA = os.path.join(BASE_DIR, DB_SSL_CA)
+
+db_config = {
+    "host": os.getenv("DB_HOST"),
+    "port": int(os.getenv("DB_PORT", "3306")),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME"),
+    "buffered": True,
+    "use_pure": True
+}
+
+if DB_SSL_CA:
+    db_config["ssl_ca"] = DB_SSL_CA
+    db_config["ssl_verify_cert"] = True
+    db_config["ssl_verify_identity"] = True
+
+db = mysql.connector.connect(**db_config)
 
 # ==========================
 # SUBJECT COLOR PALETTE

@@ -61,16 +61,16 @@ def allowed_image(filename):
 
 MAIL_USERNAME = os.getenv("MAIL_USERNAME")
 MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+MAIL_FROM = os.getenv("MAIL_FROM")
 
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 465
+SMTP_SERVER = "smtp-relay.brevo.com"
+SMTP_PORT = 2525
 
 def send_admin_otp(admin_email, otp_code):
     try:
         message = EmailMessage()
-
         message["Subject"] = "SmartSched Admin Verification Code"
-        message["From"] = MAIL_USERNAME
+        message["From"] = MAIL_FROM
         message["To"] = admin_email
 
         message.set_content(f"""
@@ -89,7 +89,8 @@ SmartSched
 Universiti Poly-Tech Malaysia
 """)
 
-        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
             server.login(MAIL_USERNAME, MAIL_PASSWORD)
             server.send_message(message)
 

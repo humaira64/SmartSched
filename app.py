@@ -373,6 +373,19 @@ if DB_SSL_CA:
 
 db = mysql.connector.connect(**db_config)
 
+def ensure_db_connection():
+    global db
+
+    try:
+        if db.is_connected():
+            return db
+    except:
+        pass
+
+    db = mysql.connector.connect(**db_config)
+
+    return db
+
 # ==========================
 # SUBJECT COLOR PALETTE
 # ==========================
@@ -876,6 +889,18 @@ def google_login():
                 "message": "Only UPTM student accounts are allowed."
             }, 403
 
+        def ensure_db_connection():
+            global db
+
+            try:
+                if db.is_connected():
+                    return db
+            except:
+                pass
+
+            db = mysql.connector.connect(**db_config)
+
+            return db
         cursor = db.cursor(dictionary=True)
 
         # Check whether student already exists
